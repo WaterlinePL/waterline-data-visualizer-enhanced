@@ -9,7 +9,7 @@
         </div>
       </template>
     </Menubar>
-    <Dialog v-model:visible="data_models_dialog_visible" modal header="Data Models" :style="{ width: '50vw' }">
+    <Dialog v-model:visible="data_models_dialog_visible" modal header="Time Series" :style="{ width: '50vw' }">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -52,8 +52,8 @@ const customize_ui_dialog_visible = ref(false);
 
 const items = ref([
   {
-    label: 'Data Models',
-    icon: 'pi pi-fw pi-database',
+    label: 'Time Series',
+    icon: 'pi pi-fw pi-clock',
     command: () => {
       data_models_dialog_visible.value = true;
     }
