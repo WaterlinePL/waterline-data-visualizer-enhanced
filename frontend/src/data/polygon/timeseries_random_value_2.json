@@ -1,0 +1,466 @@
+{
+  "id": 5,
+  "name": "Polygons - random_value_2",
+  "description": "Polygons random data (random_value_2)",
+  "metricLabel": "[mm]",
+  "minColor": "#FFF000",
+  "maxColor": "#000FFF",
+  "data": [
+    {
+      "id": 0,
+      "stationId": 0,
+      "value": 4.45,
+      "date": "2021-10-11T10:10:10Z"
+    },
+    {
+      "id": 1,
+      "stationId": 1,
+      "value": 5.89,
+      "date": "2021-10-11T10:10:10Z"
+    },
+    {
+      "id": 2,
+      "stationId": 2,
+      "value": 9.75,
+      "date": "2021-10-11T10:10:10Z"
+    },
+    {
+      "id": 3,
+      "stationId": 3,
+      "value": 9.14,
+      "date": "2021-10-11T10:10:10Z"
+    },
+    {
+      "id": 4,
+      "stationId": 0,
+      "value": 4.18,
+      "date": "2021-10-12T10:10:10Z"
+    },
+    {
+      "id": 5,
+      "stationId": 1,
+      "value": 0.59,
+      "date": "2021-10-12T10:10:10Z"
+    },
+    {
+      "id": 6,
+      "stationId": 2,
+      "value": 8.08,
+      "date": "2021-10-12T10:10:10Z"
+    },
+    {
+      "id": 7,
+      "stationId": 3,
+      "value": 5.29,
+      "date": "2021-10-12T10:10:10Z"
+    },
+    {
+      "id": 8,
+      "stationId": 0,
+      "value": 3.86,
+      "date": "2021-10-13T10:10:10Z"
+    },
+    {
+      "id": 9,
+      "stationId": 1,
+      "value": 2.71,
+      "date": "2021-10-13T10:10:10Z"
+    },
+    {
+      "id": 10,
+      "stationId": 2,
+      "value": 0.84,
+      "date": "2021-10-13T10:10:10Z"
+    },
+    {
+      "id": 11,
+      "stationId": 3,
+      "value": 8.62,
+      "date": "2021-10-13T10:10:10Z"
+    },
+    {
+      "id": 12,
+      "stationId": 0,
+      "value": 9.25,
+      "date": "2021-10-14T10:10:10Z"
+    },
+    {
+      "id": 13,
+      "stationId": 1,
+      "value": 1.54,
+      "date": "2021-10-14T10:10:10Z"
+    },
+    {
+      "id": 14,
+      "stationId": 2,
+      "value": 3.25,
+      "date": "2021-10-14T10:10:10Z"
+    },
+    {
+      "id": 15,
+      "stationId": 3,
+      "value": 7.64,
+      "date": "2021-10-14T10:10:10Z"
+    },
+    {
+      "id": 16,
+      "stationId": 0,
+      "value": 8.64,
+      "date": "2021-10-15T10:10:10Z"
+    },
+    {
+      "id": 17,
+      "stationId": 1,
+      "value": 7.52,
+      "date": "2021-10-15T10:10:10Z"
+    },
+    {
+      "id": 18,
+      "stationId": 2,
+      "value": 0.82,
+      "date": "2021-10-15T10:10:10Z"
+    },
+    {
+      "id": 19,
+      "stationId": 3,
+      "value": 4.92,
+      "date": "2021-10-15T10:10:10Z"
+    },
+    {
+      "id": 20,
+      "stationId": 0,
+      "value": 9.98,
+      "date": "2021-10-16T10:10:10Z"
+    },
+    {
+      "id": 21,
+      "stationId": 1,
+      "value": 3.49,
+      "date": "2021-10-16T10:10:10Z"
+    },
+    {
+      "id": 22,
+      "stationId": 2,
+      "value": 1.57,
+      "date": "2021-10-16T10:10:10Z"
+    },
+    {
+      "id": 23,
+      "stationId": 3,
+      "value": 9.01,
+      "date": "2021-10-16T10:10:10Z"
+    },
+    {
+      "id": 24,
+      "stationId": 0,
+      "value": 1.59,
+      "date": "2021-10-17T10:10:10Z"
+    },
+    {
+      "id": 25,
+      "stationId": 1,
+      "value": 7.06,
+      "date": "2021-10-17T10:10:10Z"
+    },
+    {
+      "id": 26,
+      "stationId": 2,
+      "value": 5.74,
+      "date": "2021-10-17T10:10:10Z"
+    },
+    {
+      "id": 27,
+      "stationId": 3,
+      "value": 6.45,
+      "date": "2021-10-17T10:10:10Z"
+    },
+    {
+      "id": 28,
+      "stationId": 0,
+      "value": 6.68,
+      "date": "2021-10-18T10:10:10Z"
+    },
+    {
+      "id": 29,
+      "stationId": 1,
+      "value": 8.67,
+      "date": "2021-10-18T10:10:10Z"
+    },
+    {
+      "id": 30,
+      "stationId": 2,
+      "value": 7.94,
+      "date": "2021-10-18T10:10:10Z"
+    },
+    {
+      "id": 31,
+      "stationId": 3,
+      "value": 8.36,
+      "date": "2021-10-18T10:10:10Z"
+    },
+    {
+      "id": 32,
+      "stationId": 0,
+      "value": 2.22,
+      "date": "2021-10-19T10:10:10Z"
+    },
+    {
+      "id": 33,
+      "stationId": 1,
+      "value": 3.18,
+      "date": "2021-10-19T10:10:10Z"
+    },
+    {
+      "id": 34,
+      "stationId": 2,
+      "value": 7.19,
+      "date": "2021-10-19T10:10:10Z"
+    },
+    {
+      "id": 35,
+      "stationId": 3,
+      "value": 8.79,
+      "date": "2021-10-19T10:10:10Z"
+    },
+    {
+      "id": 36,
+      "stationId": 0,
+      "value": 4.14,
+      "date": "2021-10-20T10:10:10Z"
+    },
+    {
+      "id": 37,
+      "stationId": 1,
+      "value": 2.64,
+      "date": "2021-10-20T10:10:10Z"
+    },
+    {
+      "id": 38,
+      "stationId": 2,
+      "value": 6.78,
+      "date": "2021-10-20T10:10:10Z"
+    },
+    {
+      "id": 39,
+      "stationId": 3,
+      "value": 8.45,
+      "date": "2021-10-20T10:10:10Z"
+    },
+    {
+      "id": 40,
+      "stationId": 0,
+      "value": 6.89,
+      "date": "2021-10-21T10:10:10Z"
+    },
+    {
+      "id": 41,
+      "stationId": 1,
+      "value": 9.49,
+      "date": "2021-10-21T10:10:10Z"
+    },
+    {
+      "id": 42,
+      "stationId": 2,
+      "value": 4.09,
+      "date": "2021-10-21T10:10:10Z"
+    },
+    {
+      "id": 43,
+      "stationId": 3,
+      "value": 4.82,
+      "date": "2021-10-21T10:10:10Z"
+    },
+    {
+      "id": 44,
+      "stationId": 0,
+      "value": 1.05,
+      "date": "2021-10-22T10:10:10Z"
+    },
+    {
+      "id": 45,
+      "stationId": 1,
+      "value": 3.72,
+      "date": "2021-10-22T10:10:10Z"
+    },
+    {
+      "id": 46,
+      "stationId": 2,
+      "value": 7.28,
+      "date": "2021-10-22T10:10:10Z"
+    },
+    {
+      "id": 47,
+      "stationId": 3,
+      "value": 8.43,
+      "date": "2021-10-22T10:10:10Z"
+    },
+    {
+      "id": 48,
+      "stationId": 0,
+      "value": 5.32,
+      "date": "2021-10-23T10:10:10Z"
+    },
+    {
+      "id": 49,
+      "stationId": 1,
+      "value": 3.85,
+      "date": "2021-10-23T10:10:10Z"
+    },
+    {
+      "id": 50,
+      "stationId": 2,
+      "value": 5.70,
+      "date": "2021-10-23T10:10:10Z"
+    },
+    {
+      "id": 51,
+      "stationId": 3,
+      "value": 9.83,
+      "date": "2021-10-23T10:10:10Z"
+    },
+    {
+      "id": 52,
+      "stationId": 0,
+      "value": 8.50,
+      "date": "2021-10-24T10:10:10Z"
+    },
+    {
+      "id": 53,
+      "stationId": 1,
+      "value": 0.07,
+      "date": "2021-10-24T10:10:10Z"
+    },
+    {
+      "id": 54,
+      "stationId": 2,
+      "value": 4.86,
+      "date": "2021-10-24T10:10:10Z"
+    },
+    {
+      "id": 55,
+      "stationId": 3,
+      "value": 6.58,
+      "date": "2021-10-24T10:10:10Z"
+    },
+    {
+      "id": 56,
+      "stationId": 0,
+      "value": 6.16,
+      "date": "2021-10-25T10:10:10Z"
+    },
+    {
+      "id": 57,
+      "stationId": 1,
+      "value": 9.88,
+      "date": "2021-10-25T10:10:10Z"
+    },
+    {
+      "id": 58,
+      "stationId": 2,
+      "value": 1.45,
+      "date": "2021-10-25T10:10:10Z"
+    },
+    {
+      "id": 59,
+      "stationId": 3,
+      "value": 1.19,
+      "date": "2021-10-25T10:10:10Z"
+    },
+    {
+      "id": 60,
+      "stationId": 0,
+      "value": 0.24,
+      "date": "2021-10-26T10:10:10Z"
+    },
+    {
+      "id": 61,
+      "stationId": 1,
+      "value": 3.64,
+      "date": "2021-10-26T10:10:10Z"
+    },
+    {
+      "id": 62,
+      "stationId": 2,
+      "value": 6.38,
+      "date": "2021-10-26T10:10:10Z"
+    },
+    {
+      "id": 63,
+      "stationId": 3,
+      "value": 2.66,
+      "date": "2021-10-26T10:10:10Z"
+    },
+    {
+      "id": 64,
+      "stationId": 0,
+      "value": 0.81,
+      "date": "2021-10-27T10:10:10Z"
+    },
+    {
+      "id": 65,
+      "stationId": 1,
+      "value": 9.64,
+      "date": "2021-10-27T10:10:10Z"
+    },
+    {
+      "id": 66,
+      "stationId": 2,
+      "value": 5.84,
+      "date": "2021-10-27T10:10:10Z"
+    },
+    {
+      "id": 67,
+      "stationId": 3,
+      "value": 4.34,
+      "date": "2021-10-27T10:10:10Z"
+    },
+    {
+      "id": 68,
+      "stationId": 0,
+      "value": 1.91,
+      "date": "2021-10-28T10:10:10Z"
+    },
+    {
+      "id": 69,
+      "stationId": 1,
+      "value": 2.16,
+      "date": "2021-10-28T10:10:10Z"
+    },
+    {
+      "id": 70,
+      "stationId": 2,
+      "value": 2.44,
+      "date": "2021-10-28T10:10:10Z"
+    },
+    {
+      "id": 71,
+      "stationId": 3,
+      "value": 3.71,
+      "date": "2021-10-28T10:10:10Z"
+    },
+    {
+      "id": 72,
+      "stationId": 0,
+      "value": 9.16,
+      "date": "2021-10-29T10:10:10Z"
+    },
+    {
+      "id": 73,
+      "stationId": 1,
+      "value": 0.63,
+      "date": "2021-10-29T10:10:10Z"
+    },
+    {
+      "id": 74,
+      "stationId": 2,
+      "value": 9.98,
+      "date": "2021-10-29T10:10:10Z"
+    },
+    {
+      "id": 75,
+      "stationId": 3,
+      "value": 7.75,
+      "date": "2021-10-29T10:10:10Z"
+    }
+  ]
+}
