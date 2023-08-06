@@ -1,72 +1,78 @@
 <template>
   <TabView class="panel">
-    <TabPanel class="panel__tab" header="Animation">
-      <Panel class="panel__item panel-item" header="Animation">
+    <div class="panel__tab">
+      <TabPanel header="Animation">
+        <Panel class="panel__item panel-item" header="Animation">
             <span class="panel__calendar p-float-label">
-                <Calendar v-model="startDatetime24h" inputId="start_date" showTime hourFormat="24" show-icon :minDate="minDate" :maxDate="maxDate" />
+                <Calendar v-model="startDatetime24h" inputId="start_date" showTime hourFormat="24" show-icon :minDate="startDatetime24h" :maxDate="endDatetime24h" />
                 <label>Start Date</label>
             </span>
-        <span class="panel__calendar p-float-label">
-                <Calendar v-model="endDatetime24h" inputId="end_date" showTime hourFormat="24" show-icon />
+          <span class="panel__calendar p-float-label">
+                <Calendar v-model="endDatetime24h" inputId="end_date" showTime hourFormat="24" show-icon :minDate="startDatetime24h" :maxDate="endDatetime24h" />
                 <label>End Date</label>
             </span>
-        <div class="panel__animation">
-          <label for="animation-interval" class="panel__animation-label">Animation interval</label>
-          <InputNumber v-model="animation_interval" inputId="animation-interval" showButtons mode="decimal" :step="100" :min="0" :max="10000" suffix=" ms" />
-        </div>
-      </Panel>
-    </TabPanel>
-    <TabPanel class="panel__tab" header="Details">
-      <Panel class="panel-item" header="Time Series"></Panel>
-      <Panel class="panel-item" header="Details">
-        <div class="panel__details">
-          <div class="details__info">
-            <div class="info__parameter">
-              <p class="parameter__label">Name</p>
-              <p class="parameter__value">LIPINY</p>
+          <div class="panel__animation">
+            <label class="panel__animation-label">Animation interval</label>
+            <InputNumber v-model="timeSeriesStore.animationInterval" inputId="animation-interval" showButtons
+                         mode="decimal" :step="100" :min="0" :max="10000" suffix=" ms" :disabled="!startDatetime24h || !endDatetime24h" />
+          </div>
+        </Panel>
+      </TabPanel>
+    </div>
+    <div class="panel__tab">
+      <TabPanel header="Details">
+        <Panel class="panel-item" header="Time Series"></Panel>
+        <Panel class="panel-item" header="Details">
+          <div class="panel__details">
+            <div class="details__info">
+              <div class="info__parameter">
+                <p class="parameter__label">Name</p>
+                <p class="parameter__value">LIPINY</p>
+              </div>
+              <div class="info__parameter">
+                <p class="parameter__label">Latitude</p>
+                <p class="parameter__value">51.3136</p>
+              </div>
+              <div class="info__parameter">
+                <p class="parameter__label">Longitute</p>
+                <p class="parameter__value">21.7283</p>
+              </div>
+              <div class="info__parameter">
+                <p class="parameter__label">Value</p>
+                <p class="parameter__value">0.3 [mm]</p>
+              </div>
+              <div class="info__parameter">
+                <p class="parameter__label">Date</p>
+                <p class="parameter__value">Aug 10, 2021, 12:00:00 AM</p>
+              </div>
             </div>
-            <div class="info__parameter">
-              <p class="parameter__label">Latitude</p>
-              <p class="parameter__value">51.3136</p>
-            </div>
-            <div class="info__parameter">
-              <p class="parameter__label">Longitute</p>
-              <p class="parameter__value">21.7283</p>
-            </div>
-            <div class="info__parameter">
-              <p class="parameter__label">Value</p>
-              <p class="parameter__value">0.3 [mm]</p>
-            </div>
-            <div class="info__parameter">
-              <p class="parameter__label">Date</p>
-              <p class="parameter__value">Aug 10, 2021, 12:00:00 AM</p>
+            <Divider class="details__divider"></Divider>
+            <div class="details__chart">
+              <Chart type="bar" :data="chartData" :options="chartOptions" />
             </div>
           </div>
-          <Divider class="details__divider"></Divider>
-          <div class="details__chart">
-            <Chart type="bar" :data="chartData" :options="chartOptions" />
-          </div>
-        </div>
-      </Panel>
-    </TabPanel>
+        </Panel>
+      </TabPanel>
+    </div>
   </TabView>
 </template>
 
-<script setup lang="ts">
-import "leaflet/dist/leaflet.css";
-import {ref, onMounted} from "vue";
-
+<script setup>
+import { ref, onMounted, watch } from 'vue';
 import { useTimeseriesStore } from '@/state/timeseries.state';
 
 const timeSeriesStore = useTimeseriesStore();
-const selectedTimeSeriesDataDates = timeSeriesStore.selectedTimeSeriesDataDates;
-const minDate = selectedTimeSeriesDataDates[0];
-const maxDate = selectedTimeSeriesDataDates[-1];
 
-const startDatetime24h = ref();
-const endDatetime24h = ref();
+const startDatetime24h = ref(timeSeriesStore.minTimeSeriesDataDate);
+const endDatetime24h = ref(timeSeriesStore.maxTimeSeriesDataDate);
 
-const animation_interval = ref(100);
+watch(() => timeSeriesStore.minTimeSeriesDataDate,
+    (newDate) => startDatetime24h.value = newDate
+);
+
+watch(() => timeSeriesStore.maxTimeSeriesDataDate,
+    (newDate) => endDatetime24h.value = newDate
+);
 
 onMounted(() => {
   chartData.value = setChartData();
@@ -110,7 +116,7 @@ const setChartData = () => {
 };
 const setChartOptions = () => {
   const documentStyle = getComputedStyle(document.documentElement);
-  const textColor = documentStyle.getPropertyValue('--text-color');
+  // const textColor = documentStyle.getPropertyValue('--text-color');
   const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
   const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 

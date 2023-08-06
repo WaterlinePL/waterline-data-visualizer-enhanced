@@ -1,6 +1,6 @@
 {
   "id": 3,
-  "name": "IMGW - precipitation",
+  "name": "IMGW",
   "description": "Rain data from IMGW stations",
   "metricLabel": "[mm]",
   "minColor": "#FFF000",

@@ -37,18 +37,63 @@
       <ProgressBar :value="progress_value"></ProgressBar>
     </div>
     <div class="controllers__controls">
-      <Button class="controls__button controls__button--play" icon="pi pi-play" rounded aria-label="Play" />
-      <Button class="controls__button controls__button--pause" icon="pi pi-pause" rounded aria-label="Pause" />
-      <Button class="controls__button  controls__button--stop" icon="pi pi-stop" severity="danger" rounded aria-label="Stop" />
+      <Button @click="startAnimation" class="controls__button controls__button--play" icon="pi pi-play" rounded aria-label="Play" v-if="!isAnimating" />
+      <Button @click="pauseAnimation" class="controls__button controls__button--pause" icon="pi pi-pause" rounded aria-label="Pause" v-else />
+      <Button @click="stopAnimation" class="controls__button  controls__button--stop" icon="pi pi-stop" severity="danger" rounded aria-label="Stop" :disabled="!isAnimating" />
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import "leaflet/dist/leaflet.js";
-import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
-import { ref } from "vue";
+import {LMap, LMarker, LTileLayer} from "@vue-leaflet/vue-leaflet";
+import {ref} from "vue";
 import * as L from "leaflet";
+
+import {useTimeseriesStore} from '@/state/timeseries.state';
+
+const timeSeriesStore = useTimeseriesStore();
+const isAnimating = ref(timeSeriesStore.isAnimating);
+let animationIntervalId = null;
+let animationIndex = 0;
+
+const animate = () => {
+  if (animationIndex >= timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped.length) {
+    stopAnimation();
+    return;
+  }
+
+  const [key, dataArray] = timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped[animationIndex];
+  console.log(`Index: ${animationIndex}`);
+  console.log(`Key: ${key}`);
+  console.log(`Data Array:`, dataArray);
+
+  animationIndex++;
+};
+
+const startAnimation = () => {
+  if (isAnimating.value) return;
+
+  isAnimating.value = true;
+  animate();
+  animationIntervalId = setInterval(animate, timeSeriesStore.animationInterval);
+};
+
+const pauseAnimation = () => {
+  if (!isAnimating.value) return;
+
+  isAnimating.value = false;
+  clearInterval(animationIntervalId);
+}
+
+const stopAnimation = () => {
+  if (!isAnimating.value) return;
+
+  isAnimating.value = false;
+  clearInterval(animationIntervalId);
+  animationIndex = 0;
+}
+
 
 const url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 let zoom = 6;
@@ -94,6 +139,47 @@ function getCustomIcon() {
   });
 }
 </script>
+
+<!--<script setup>-->
+<!--// Function to increment date and update the map-->
+<!--const animate = () => {-->
+<!--  const currentIndex = timeSeriesStore.selectedTimeSeriesDataDates.findIndex(-->
+<!--      (date) => date.getTime() === timeSeriesStore.minSelectedTimeSeriesDataDate.getTime()-->
+<!--  );-->
+
+<!--  if (currentIndex >= 0 && currentIndex < timeSeriesStore.selectedTimeSeriesDataDates.length - 1) {-->
+<!--    const nextDate = timeSeriesStore.selectedTimeSeriesDataDates[currentIndex + 1];-->
+<!--    timeSeriesStore.minSelectedTimeSeriesDataDate = nextDate;-->
+<!--  } else {-->
+<!--    stopAnimation();-->
+<!--  }-->
+<!--};-->
+
+<!--// Function to start the animation-->
+<!--const startAnimation = () => {-->
+<!--  if (!isAnimating.value) {-->
+<!--    isAnimating.value = true;-->
+<!--    animationTimer = setInterval(animate, timeSeriesStore.animationInterval);-->
+<!--  }-->
+<!--};-->
+
+<!--// Function to pause the animation-->
+<!--const pauseAnimation = () => {-->
+<!--  if (isAnimating.value) {-->
+<!--    isAnimating.value = false;-->
+<!--    clearInterval(animationTimer);-->
+<!--  }-->
+<!--};-->
+
+<!--// Function to stop the animation-->
+<!--const stopAnimation = () => {-->
+<!--  if (isAnimating.value) {-->
+<!--    pauseAnimation();-->
+<!--    isAnimating.value = false;-->
+<!--    timeSeriesStore.minSelectedTimeSeriesDataDate = timeSeriesStore.selectedTimeSeriesDataDates[0];-->
+<!--  }-->
+<!--};-->
+<!--</script>-->
 
 <style>
 .content__map {

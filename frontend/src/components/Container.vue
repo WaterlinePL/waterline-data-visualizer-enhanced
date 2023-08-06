@@ -13,7 +13,7 @@
   </main>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import "leaflet/dist/leaflet.js";
 import "leaflet/dist/leaflet.css";
 import Header from "./Header.vue";

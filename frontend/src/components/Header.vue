@@ -9,7 +9,7 @@
             <p class="header__description">New solutions for data assimilation and communication to improve hydrological modelling and forecasting</p>
           </div>
         </div>
-        <MultiSelect class="header__multiselect" v-model="selectedTimeSeriesData" :options="timeSeries" filter :maxSelectedLabels="1"
+        <MultiSelect class="header__multiselect" v-model="timeSeriesStore.selectedTimeSeriesData" :options="timeSeriesStore.timeSeries" filter :maxSelectedLabels="1"
                      optionLabel="name" optionValue="data" placeholder="Select Time Series" />
       </template>
     </Menubar>
@@ -36,20 +36,15 @@
   </header>
 </template>
 
-<script setup lang="ts">
-import "leaflet/dist/leaflet.css";
-import {ref, watch} from "vue";
+<script setup>
+import { ref, watch } from 'vue';
 
 import { useTimeseriesStore } from '@/state/timeseries.state';
 
 const timeSeriesStore = useTimeseriesStore();
-const timeSeries = timeSeriesStore.timeSeries;
-
-const selectedTimeSeriesData = ref([]);
-
-watch(selectedTimeSeriesData, () => {
-  timeSeriesStore.setSelectedTimeSeriesData(selectedTimeSeriesData.value);
-});
+watch(() => timeSeriesStore.selectedTimeSeriesData, selectedTimeSeriesData => {
+  timeSeriesStore.updateTimeseriesData(selectedTimeSeriesData);
+})
 
 const stationsDialogVisible = ref(false);
 const customizeUIDialogVisible = ref(false);

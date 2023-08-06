@@ -1,6 +1,6 @@
 {
   "id": 2,
-  "name": "IMGW - temperature",
+  "name": "IMGW",
   "description": "Temperature data from IMGW stations",
   "metricLabel": "[°C]",
   "minColor": "#FFF000",

@@ -2,7 +2,7 @@
   <Container/>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import Container from "./components/Container.vue";
 </script>
 
