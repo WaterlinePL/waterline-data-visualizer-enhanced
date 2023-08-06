@@ -3,12 +3,12 @@
     <TabPanel class="panel__tab" header="Animation">
       <Panel class="panel__item panel-item" header="Animation">
             <span class="panel__calendar p-float-label">
-                <Calendar v-model="start_datetime24h" inputId="start_date" showTime hourFormat="24" show-icon />
-                <label for="start_date">Start Date</label>
+                <Calendar v-model="startDatetime24h" inputId="start_date" showTime hourFormat="24" show-icon :minDate="minDate" :maxDate="maxDate" />
+                <label>Start Date</label>
             </span>
         <span class="panel__calendar p-float-label">
-                <Calendar v-model="end_datetime24h" inputId="end_date" showTime hourFormat="24" show-icon />
-                <label for="end_date">End Date</label>
+                <Calendar v-model="endDatetime24h" inputId="end_date" showTime hourFormat="24" show-icon />
+                <label>End Date</label>
             </span>
         <div class="panel__animation">
           <label for="animation-interval" class="panel__animation-label">Animation interval</label>
@@ -54,10 +54,17 @@
 
 <script setup lang="ts">
 import "leaflet/dist/leaflet.css";
-import { ref, onMounted } from "vue";
+import {ref, onMounted} from "vue";
 
-const start_datetime24h = ref();
-const end_datetime24h = ref();
+import { useTimeseriesStore } from '@/state/timeseries.state';
+
+const timeSeriesStore = useTimeseriesStore();
+const selectedTimeSeriesDataDates = timeSeriesStore.selectedTimeSeriesDataDates;
+const minDate = selectedTimeSeriesDataDates[0];
+const maxDate = selectedTimeSeriesDataDates[-1];
+
+const startDatetime24h = ref();
+const endDatetime24h = ref();
 
 const animation_interval = ref(100);
 

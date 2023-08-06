@@ -2,41 +2,35 @@
   <header class="header">
     <Menubar :model="items">
       <template #start>
-        <img alt="logo" src="../assets/logo.png" height="55" class="mr-2" />
-        <div class="header__text">
-          <p class="header__title">Waterline project</p>
-          <p class="header__description">New solutions for data assimilation and communication to improve hydrological modelling and forecasting</p>
+        <div class="header__logo">
+          <img alt="logo" src="../assets/logo.png" height="55" class="mr-2" />
+          <div class="header__text">
+            <p class="header__title">Waterline project</p>
+            <p class="header__description">New solutions for data assimilation and communication to improve hydrological modelling and forecasting</p>
+          </div>
         </div>
+        <MultiSelect class="header__multiselect" v-model="selectedTimeSeriesData" :options="timeSeries" filter :maxSelectedLabels="1"
+                     optionLabel="name" optionValue="data" placeholder="Select Time Series" />
       </template>
     </Menubar>
-    <Dialog v-model:visible="data_models_dialog_visible" modal header="Time Series" :style="{ width: '50vw' }">
+    <Dialog v-model:visible="stationsDialogVisible" modal header="Stations" :style="{ width: '50vw' }">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
       <template #footer>
-        <Button label="No" icon="pi pi-times" @click="data_models_dialog_visible = false" text />
-        <Button label="Yes" icon="pi pi-check" @click="data_models_dialog_visible = false" autofocus />
+        <Button label="No" icon="pi pi-times" @click="stationsDialogVisible = false" text />
+        <Button label="Yes" icon="pi pi-check" @click="stationsDialogVisible = false" autofocus />
       </template>
     </Dialog>
-    <Dialog v-model:visible="stations_dialog_visible" modal header="Stations" :style="{ width: '50vw' }">
+    <Dialog v-model:visible="customizeUIDialogVisible" modal header="Customize UI" :style="{ width: '50vw' }">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
       <template #footer>
-        <Button label="No" icon="pi pi-times" @click="stations_dialog_visible = false" text />
-        <Button label="Yes" icon="pi pi-check" @click="stations_dialog_visible = false" autofocus />
-      </template>
-    </Dialog>
-    <Dialog v-model:visible="customize_ui_dialog_visible" modal header="Customize UI" :style="{ width: '50vw' }">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-      <template #footer>
-        <Button label="No" icon="pi pi-times" @click="customize_ui_dialog_visible = false" text />
-        <Button label="Yes" icon="pi pi-check" @click="customize_ui_dialog_visible = false" autofocus />
+        <Button label="No" icon="pi pi-times" @click="customizeUIDialogVisible = false" text />
+        <Button label="Yes" icon="pi pi-check" @click="customizeUIDialogVisible = false" autofocus />
       </template>
     </Dialog>
   </header>
@@ -44,32 +38,35 @@
 
 <script setup lang="ts">
 import "leaflet/dist/leaflet.css";
-import { ref} from "vue";
+import {ref, watch} from "vue";
 
-const data_models_dialog_visible = ref(false);
-const stations_dialog_visible = ref(false);
-const customize_ui_dialog_visible = ref(false);
+import { useTimeseriesStore } from '@/state/timeseries.state';
+
+const timeSeriesStore = useTimeseriesStore();
+const timeSeries = timeSeriesStore.timeSeries;
+
+const selectedTimeSeriesData = ref([]);
+
+watch(selectedTimeSeriesData, () => {
+  timeSeriesStore.setSelectedTimeSeriesData(selectedTimeSeriesData.value);
+});
+
+const stationsDialogVisible = ref(false);
+const customizeUIDialogVisible = ref(false);
 
 const items = ref([
-  {
-    label: 'Time Series',
-    icon: 'pi pi-fw pi-clock',
-    command: () => {
-      data_models_dialog_visible.value = true;
-    }
-  },
   {
     label: 'Stations',
     icon: 'pi pi-fw pi-map-marker',
     command: () => {
-      stations_dialog_visible.value = true;
+      stationsDialogVisible.value = true;
     }
   },
   {
     label: 'Customize UI',
     icon: 'pi pi-fw pi-palette',
     command: () => {
-      customize_ui_dialog_visible.value = true;
+      customizeUIDialogVisible.value = true;
     }
   }
 ]);
@@ -89,6 +86,17 @@ const items = ref([
 .header .p-menubar-start {
   display: flex;
   align-items: center;
+}
+
+.header__logo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__multiselect {
+  margin-left: 5rem;
+  min-width: 210px;
 }
 
 .header__text {

@@ -12,6 +12,7 @@ import InputNumber from 'primevue/inputnumber';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Dialog from 'primevue/dialog';
+import MultiSelect from 'primevue/multiselect';
 import { createPinia } from "pinia";
 
 // create new Vue app
@@ -36,6 +37,7 @@ app.component('InputNumber', InputNumber)
 app.component('TabView', TabView)
 app.component('TabPanel', TabPanel)
 app.component('Dialog', Dialog)
+app.component('MultiSelect', MultiSelect)
 
 // mount the app
 app.mount("#app");
