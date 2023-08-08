@@ -8,456 +8,532 @@
   "data": [
     {
       "id": 0,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 4.45,
       "date": "2021-10-11T10:10:10Z"
     },
     {
       "id": 1,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 5.89,
       "date": "2021-10-11T10:10:10Z"
     },
     {
       "id": 2,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 9.75,
       "date": "2021-10-11T10:10:10Z"
     },
     {
       "id": 3,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 9.14,
       "date": "2021-10-11T10:10:10Z"
     },
     {
       "id": 4,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 4.18,
       "date": "2021-10-12T10:10:10Z"
     },
     {
       "id": 5,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 0.59,
       "date": "2021-10-12T10:10:10Z"
     },
     {
       "id": 6,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 8.08,
       "date": "2021-10-12T10:10:10Z"
     },
     {
       "id": 7,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 5.29,
       "date": "2021-10-12T10:10:10Z"
     },
     {
       "id": 8,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 3.86,
       "date": "2021-10-13T10:10:10Z"
     },
     {
       "id": 9,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 2.71,
       "date": "2021-10-13T10:10:10Z"
     },
     {
       "id": 10,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 0.84,
       "date": "2021-10-13T10:10:10Z"
     },
     {
       "id": 11,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 8.62,
       "date": "2021-10-13T10:10:10Z"
     },
     {
       "id": 12,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 9.25,
       "date": "2021-10-14T10:10:10Z"
     },
     {
       "id": 13,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 1.54,
       "date": "2021-10-14T10:10:10Z"
     },
     {
       "id": 14,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 3.25,
       "date": "2021-10-14T10:10:10Z"
     },
     {
       "id": 15,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 7.64,
       "date": "2021-10-14T10:10:10Z"
     },
     {
       "id": 16,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 8.64,
       "date": "2021-10-15T10:10:10Z"
     },
     {
       "id": 17,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 7.52,
       "date": "2021-10-15T10:10:10Z"
     },
     {
       "id": 18,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 0.82,
       "date": "2021-10-15T10:10:10Z"
     },
     {
       "id": 19,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 4.92,
       "date": "2021-10-15T10:10:10Z"
     },
     {
       "id": 20,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 9.98,
       "date": "2021-10-16T10:10:10Z"
     },
     {
       "id": 21,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 3.49,
       "date": "2021-10-16T10:10:10Z"
     },
     {
       "id": 22,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 1.57,
       "date": "2021-10-16T10:10:10Z"
     },
     {
       "id": 23,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 9.01,
       "date": "2021-10-16T10:10:10Z"
     },
     {
       "id": 24,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 1.59,
       "date": "2021-10-17T10:10:10Z"
     },
     {
       "id": 25,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 7.06,
       "date": "2021-10-17T10:10:10Z"
     },
     {
       "id": 26,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 5.74,
       "date": "2021-10-17T10:10:10Z"
     },
     {
       "id": 27,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 6.45,
       "date": "2021-10-17T10:10:10Z"
     },
     {
       "id": 28,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 6.68,
       "date": "2021-10-18T10:10:10Z"
     },
     {
       "id": 29,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 8.67,
       "date": "2021-10-18T10:10:10Z"
     },
     {
       "id": 30,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 7.94,
       "date": "2021-10-18T10:10:10Z"
     },
     {
       "id": 31,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 8.36,
       "date": "2021-10-18T10:10:10Z"
     },
     {
       "id": 32,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 2.22,
       "date": "2021-10-19T10:10:10Z"
     },
     {
       "id": 33,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 3.18,
       "date": "2021-10-19T10:10:10Z"
     },
     {
       "id": 34,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 7.19,
       "date": "2021-10-19T10:10:10Z"
     },
     {
       "id": 35,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 8.79,
       "date": "2021-10-19T10:10:10Z"
     },
     {
       "id": 36,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 4.14,
       "date": "2021-10-20T10:10:10Z"
     },
     {
       "id": 37,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 2.64,
       "date": "2021-10-20T10:10:10Z"
     },
     {
       "id": 38,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 6.78,
       "date": "2021-10-20T10:10:10Z"
     },
     {
       "id": 39,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 8.45,
       "date": "2021-10-20T10:10:10Z"
     },
     {
       "id": 40,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 6.89,
       "date": "2021-10-21T10:10:10Z"
     },
     {
       "id": 41,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 9.49,
       "date": "2021-10-21T10:10:10Z"
     },
     {
       "id": 42,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 4.09,
       "date": "2021-10-21T10:10:10Z"
     },
     {
       "id": 43,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 4.82,
       "date": "2021-10-21T10:10:10Z"
     },
     {
       "id": 44,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 1.05,
       "date": "2021-10-22T10:10:10Z"
     },
     {
       "id": 45,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 3.72,
       "date": "2021-10-22T10:10:10Z"
     },
     {
       "id": 46,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 7.28,
       "date": "2021-10-22T10:10:10Z"
     },
     {
       "id": 47,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 8.43,
       "date": "2021-10-22T10:10:10Z"
     },
     {
       "id": 48,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 5.32,
       "date": "2021-10-23T10:10:10Z"
     },
     {
       "id": 49,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 3.85,
       "date": "2021-10-23T10:10:10Z"
     },
     {
       "id": 50,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 5.70,
       "date": "2021-10-23T10:10:10Z"
     },
     {
       "id": 51,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 9.83,
       "date": "2021-10-23T10:10:10Z"
     },
     {
       "id": 52,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 8.50,
       "date": "2021-10-24T10:10:10Z"
     },
     {
       "id": 53,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 0.07,
       "date": "2021-10-24T10:10:10Z"
     },
     {
       "id": 54,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 4.86,
       "date": "2021-10-24T10:10:10Z"
     },
     {
       "id": 55,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 6.58,
       "date": "2021-10-24T10:10:10Z"
     },
     {
       "id": 56,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 6.16,
       "date": "2021-10-25T10:10:10Z"
     },
     {
       "id": 57,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 9.88,
       "date": "2021-10-25T10:10:10Z"
     },
     {
       "id": 58,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 1.45,
       "date": "2021-10-25T10:10:10Z"
     },
     {
       "id": 59,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 1.19,
       "date": "2021-10-25T10:10:10Z"
     },
     {
       "id": 60,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 0.24,
       "date": "2021-10-26T10:10:10Z"
     },
     {
       "id": 61,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 3.64,
       "date": "2021-10-26T10:10:10Z"
     },
     {
       "id": 62,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 6.38,
       "date": "2021-10-26T10:10:10Z"
     },
     {
       "id": 63,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 2.66,
       "date": "2021-10-26T10:10:10Z"
     },
     {
       "id": 64,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 0.81,
       "date": "2021-10-27T10:10:10Z"
     },
     {
       "id": 65,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 9.64,
       "date": "2021-10-27T10:10:10Z"
     },
     {
       "id": 66,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 5.84,
       "date": "2021-10-27T10:10:10Z"
     },
     {
       "id": 67,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 4.34,
       "date": "2021-10-27T10:10:10Z"
     },
     {
       "id": 68,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 1.91,
       "date": "2021-10-28T10:10:10Z"
     },
     {
       "id": 69,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 2.16,
       "date": "2021-10-28T10:10:10Z"
     },
     {
       "id": 70,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 2.44,
       "date": "2021-10-28T10:10:10Z"
     },
     {
       "id": 71,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 3.71,
       "date": "2021-10-28T10:10:10Z"
     },
     {
       "id": 72,
+      "timeSeriesId": 5,
       "stationId": 0,
       "value": 9.16,
       "date": "2021-10-29T10:10:10Z"
     },
     {
       "id": 73,
+      "timeSeriesId": 5,
       "stationId": 1,
       "value": 0.63,
       "date": "2021-10-29T10:10:10Z"
     },
     {
       "id": 74,
+      "timeSeriesId": 5,
       "stationId": 2,
       "value": 9.98,
       "date": "2021-10-29T10:10:10Z"
     },
     {
       "id": 75,
+      "timeSeriesId": 5,
       "stationId": 3,
       "value": 7.75,
       "date": "2021-10-29T10:10:10Z"
