@@ -18,28 +18,28 @@
       </div>
     </div>
   </div>
-  <div class="content__controllers">
+  <div class="content__controllers" v-if="showControllers">
     <div class="controllers__dates">
       <div class="dates__date">
         <p class="date__label date__label--left">Animation Start</p>
-        <p class="date__time">Aug 4, 2021, 12:00:00 AM</p>
+        <p class="date__time">{{ animationStart.toLocaleString() }}</p>
       </div>
       <div class="dates__date">
         <p class="date__label date__label--center">Now</p>
-        <p class="date__time">Aug 11, 2021, 12:00:00 AM</p>
+        <p class="date__time">{{ animationNow.toLocaleString() }}</p>
       </div>
       <div class="dates__date">
         <p class="date__label date__label--right">Animation End</p>
-        <p class="date__time">Aug 31, 2021, 12:00:00 AM</p>
+        <p class="date__time">{{ animationEnd.toLocaleString() }}</p>
       </div>
     </div>
     <div class="controllers__progress-bar">
-      <ProgressBar :value="progress_value"></ProgressBar>
+      <ProgressBar :value="progressValue"></ProgressBar>
     </div>
     <div class="controllers__controls">
-      <Button @click="startAnimation" class="controls__button controls__button--play" icon="pi pi-play" rounded aria-label="Play" v-if="!isAnimating" />
+      <Button @click="startAnimation" class="controls__button controls__button--play" icon="pi pi-play" rounded aria-label="Play" v-if="!isAnimating" :disabled="!timeSeriesStore.minTimeSeriesDataDate || !timeSeriesStore.maxTimeSeriesDataDate" />
       <Button @click="pauseAnimation" class="controls__button controls__button--pause" icon="pi pi-pause" rounded aria-label="Pause" v-else />
-      <Button @click="stopAnimation" class="controls__button  controls__button--stop" icon="pi pi-stop" severity="danger" rounded aria-label="Stop" :disabled="!isAnimating" />
+      <Button @click="stopAnimation" class="controls__button  controls__button--stop" icon="pi pi-stop" severity="danger" rounded aria-label="Stop" :disabled="!progressValue" />
     </div>
   </div>
 </template>
@@ -47,27 +47,41 @@
 <script setup>
 import "leaflet/dist/leaflet.js";
 import {LMap, LMarker, LTileLayer} from "@vue-leaflet/vue-leaflet";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import * as L from "leaflet";
 
 import {useTimeseriesStore} from '@/state/timeseries.state';
 
 const timeSeriesStore = useTimeseriesStore();
 const isAnimating = ref(timeSeriesStore.isAnimating);
+const progressValue = ref(0);
+
+const showControllers = ref(false)
+const animationStart = ref(timeSeriesStore.minTimeSeriesDataDate);
+const animationEnd = ref(timeSeriesStore.maxTimeSeriesDataDate);
+const animationNow = ref(timeSeriesStore.minTimeSeriesDataDate);
+
 let animationIntervalId = null;
 let animationIndex = 0;
 
+watch(() => timeSeriesStore.maxTimeSeriesDataDate, maxTimeSeriesDataDate => {
+  showControllers.value = !!maxTimeSeriesDataDate;
+});
+
 const animate = () => {
-  if (animationIndex >= timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped.length) {
+  const timeSeriesData = ref(timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped);
+  if (animationIndex >= timeSeriesData.value.length) {
     stopAnimation();
     return;
   }
 
-  const [key, dataArray] = timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped[animationIndex];
+  const [key, dataArray] = timeSeriesData.value[animationIndex];
   console.log(`Index: ${animationIndex}`);
   console.log(`Key: ${key}`);
   console.log(`Data Array:`, dataArray);
 
+  animationNow.value = key;
+  progressValue.value = ((animationIndex + 1) / timeSeriesData.value.length) * 100;
   animationIndex++;
 };
 
@@ -87,19 +101,16 @@ const pauseAnimation = () => {
 }
 
 const stopAnimation = () => {
-  if (!isAnimating.value) return;
-
   isAnimating.value = false;
   clearInterval(animationIntervalId);
   animationIndex = 0;
+  progressValue.value = 0;
 }
 
 
 const url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 let zoom = 6;
 let center = [51.19066, 18.6592];
-
-const progress_value = ref(35);
 
 const points = ref([
   {
@@ -124,62 +135,19 @@ const points = ref([
 
 function getCustomIcon() {
   const iconHTML = `
-    <div style="width: 32px; height: 32px; display: flex;">
+    <div style="width: 20px; height: 20px; display: flex;">
       <div style="flex: 1; background-color: red"></div>
       <div style="flex: 1; background-color: green"></div>
-      <div style="flex: 1; background-color: blue"></div>
-      <div style="flex: 1; background-color: pink"></div>
-      <div style="flex: 1; background-color: yellow"></div>
     </div>
   `;
   return L.divIcon({
     html: iconHTML,
-    iconSize: [32, 32],
-    iconAnchor: [16, 16]
+    iconSize: [20, 20],
+    iconAnchor: [20, 20]
   });
 }
 </script>
 
-<!--<script setup>-->
-<!--// Function to increment date and update the map-->
-<!--const animate = () => {-->
-<!--  const currentIndex = timeSeriesStore.selectedTimeSeriesDataDates.findIndex(-->
-<!--      (date) => date.getTime() === timeSeriesStore.minSelectedTimeSeriesDataDate.getTime()-->
-<!--  );-->
-
-<!--  if (currentIndex >= 0 && currentIndex < timeSeriesStore.selectedTimeSeriesDataDates.length - 1) {-->
-<!--    const nextDate = timeSeriesStore.selectedTimeSeriesDataDates[currentIndex + 1];-->
-<!--    timeSeriesStore.minSelectedTimeSeriesDataDate = nextDate;-->
-<!--  } else {-->
-<!--    stopAnimation();-->
-<!--  }-->
-<!--};-->
-
-<!--// Function to start the animation-->
-<!--const startAnimation = () => {-->
-<!--  if (!isAnimating.value) {-->
-<!--    isAnimating.value = true;-->
-<!--    animationTimer = setInterval(animate, timeSeriesStore.animationInterval);-->
-<!--  }-->
-<!--};-->
-
-<!--// Function to pause the animation-->
-<!--const pauseAnimation = () => {-->
-<!--  if (isAnimating.value) {-->
-<!--    isAnimating.value = false;-->
-<!--    clearInterval(animationTimer);-->
-<!--  }-->
-<!--};-->
-
-<!--// Function to stop the animation-->
-<!--const stopAnimation = () => {-->
-<!--  if (isAnimating.value) {-->
-<!--    pauseAnimation();-->
-<!--    isAnimating.value = false;-->
-<!--    timeSeriesStore.minSelectedTimeSeriesDataDate = timeSeriesStore.selectedTimeSeriesDataDates[0];-->
-<!--  }-->
-<!--};-->
-<!--</script>-->
 
 <style>
 .content__map {
