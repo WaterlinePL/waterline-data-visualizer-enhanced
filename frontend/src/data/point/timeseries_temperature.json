@@ -2,6 +2,7 @@
   "id": 2,
   "name": "IMGW - temperature",
   "description": "Temperature data from IMGW stations",
+  "valueLabel": "temperature",
   "metricLabel": "[°C]",
   "minColor": "#FFF000",
   "maxColor": "#000FFF",

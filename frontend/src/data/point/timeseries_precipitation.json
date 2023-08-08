@@ -2,6 +2,7 @@
   "id": 3,
   "name": "IMGW - raining",
   "description": "Rain data from IMGW stations",
+  "valueLabel": "precipitation",
   "metricLabel": "[mm]",
   "minColor": "#FFF000",
   "maxColor": "#000FFF",

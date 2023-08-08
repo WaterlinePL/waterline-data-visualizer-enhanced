@@ -2,6 +2,7 @@
   "id": 6,
   "name": "Polygons - random_value_3",
   "description": "Polygons random data (random_value_3)",
+  "valueLabel": "precipitation",
   "metricLabel": "[mm]",
   "minColor": "#FFF000",
   "maxColor": "#000FFF",

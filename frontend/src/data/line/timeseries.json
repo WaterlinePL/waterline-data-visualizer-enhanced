@@ -2,6 +2,7 @@
   "id": 1,
   "name": "Kocinka River Temperature",
   "description": "Kocinka river temperature data",
+  "valueLabel": "temperature",
   "metricLabel": "[°C]",
   "minColor": "#FFF000",
   "maxColor": "#000FFF",
