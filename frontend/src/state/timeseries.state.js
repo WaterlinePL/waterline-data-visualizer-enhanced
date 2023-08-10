@@ -7,11 +7,25 @@ function prepareData(data) {
         .flat()
         .map(item => ({
             id: item.id,
+            timeSeriesId: item.timeSeriesId,
             stationId: item.stationId,
             value: item.value,
             date: new Date(item.date)
         }))
         .sort((a, b) => a.date - b.date);
+}
+
+function prepareTimeSeriesInfo(data) {
+    return data
+        .map(item => ({
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            valueLabel: item.valueLabel,
+            metricLabel: item.metricLabel,
+            minColor: item.minColor,
+            maxColor: item.maxColor
+        }));
 }
 
 function groupByDate(mergedAndSortedData) {
@@ -29,6 +43,7 @@ function groupByDate(mergedAndSortedData) {
 export const useTimeseriesStore = defineStore('timeseries', {
     state: () => ({
         timeSeries: [timeseriesDataPrecipitation, timeseriesDataTemperature],
+        timeSeriesInfoMap: new Map(),
         selectedTimeSeriesData: [],
         selectedTimeSeriesDataDates: [],
         selectedTimeSeriesDataMergedAndGrouped: null,
@@ -40,6 +55,12 @@ export const useTimeseriesStore = defineStore('timeseries', {
         animationInterval: 1000
     }),
     actions: {
+        initialize() {
+          this.timeSeries.forEach(jsonObject => {
+              let timeSeriesInfo = prepareTimeSeriesInfo(jsonObject);
+             this.timeSeriesInfoMap.set(timeSeriesInfo.id, timeSeriesInfo);
+          });
+        },
         updateTimeseriesData(newSelectedTimeSeriesData) {
             const mergedAndSortedData = prepareData(newSelectedTimeSeriesData);
             this.selectedTimeSeriesDataDates = [...new Set(mergedAndSortedData.map(item => item.date))];
