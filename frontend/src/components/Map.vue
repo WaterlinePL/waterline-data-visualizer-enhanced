@@ -18,19 +18,19 @@
       </div>
     </div>
   </div>
-  <div class="content__controllers" v-if="showControllers">
+  <div class="content__controllers">
     <div class="controllers__dates">
       <div class="dates__date">
         <p class="date__label date__label--left">Animation Start</p>
-        <p class="date__time">{{ animationStart.toLocaleString() }}</p>
+        <p class="date__time">{{ animationStart }}</p>
       </div>
       <div class="dates__date">
         <p class="date__label date__label--center">Now</p>
-        <p class="date__time">{{ animationNow.toLocaleString() }}</p>
+        <p class="date__time">{{ animationNow }}</p>
       </div>
       <div class="dates__date">
         <p class="date__label date__label--right">Animation End</p>
-        <p class="date__time">{{ animationEnd.toLocaleString() }}</p>
+        <p class="date__time">{{ animationEnd }}</p>
       </div>
     </div>
     <div class="controllers__progress-bar">
@@ -56,17 +56,21 @@ const timeSeriesStore = useTimeseriesStore();
 const isAnimating = ref(timeSeriesStore.isAnimating);
 const progressValue = ref(0);
 
-const showControllers = ref(false)
-const animationStart = ref(timeSeriesStore.minTimeSeriesDataDate);
-const animationEnd = ref(timeSeriesStore.maxTimeSeriesDataDate);
-const animationNow = ref(timeSeriesStore.minTimeSeriesDataDate);
+const animationStart = ref();
+const animationEnd = ref();
+const animationNow = ref("Select animation start and end dates to run an animation");
+
+watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate, selectedMinTimeSeriesDataDate => {
+  animationStart.value = selectedMinTimeSeriesDataDate.toLocaleString();
+  animationNow.value = selectedMinTimeSeriesDataDate.toLocaleString();
+});
+
+watch(() => timeSeriesStore.selectedMaxTimeSeriesDataDate, selectedMaxTimeSeriesDataDate => {
+  animationEnd.value = selectedMaxTimeSeriesDataDate.toLocaleString();
+});
 
 let animationIntervalId = null;
 let animationIndex = 0;
-
-watch(() => timeSeriesStore.maxTimeSeriesDataDate, maxTimeSeriesDataDate => {
-  showControllers.value = !!maxTimeSeriesDataDate;
-});
 
 const animate = () => {
   const timeSeriesData = ref(timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped);
@@ -80,7 +84,7 @@ const animate = () => {
   console.log(`Key: ${key}`);
   console.log(`Data Array:`, dataArray);
 
-  animationNow.value = key;
+  animationNow.value = new Date(key).toLocaleString();
   progressValue.value = ((animationIndex + 1) / timeSeriesData.value.length) * 100;
   animationIndex++;
 };
@@ -105,6 +109,7 @@ const stopAnimation = () => {
   clearInterval(animationIntervalId);
   animationIndex = 0;
   progressValue.value = 0;
+  animationNow.value = animationStart.value;
 }
 
 

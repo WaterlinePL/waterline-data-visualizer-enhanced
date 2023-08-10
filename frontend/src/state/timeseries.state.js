@@ -33,7 +33,9 @@ export const useTimeseriesStore = defineStore('timeseries', {
         selectedTimeSeriesDataDates: [],
         selectedTimeSeriesDataMergedAndGrouped: null,
         minTimeSeriesDataDate: null,
+        selectedMinTimeSeriesDataDate: null,
         maxTimeSeriesDataDate: null,
+        selectedMaxTimeSeriesDataDate: null,
         isAnimating: false,
         animationInterval: 1000
     }),
@@ -42,7 +44,9 @@ export const useTimeseriesStore = defineStore('timeseries', {
             const mergedAndSortedData = prepareData(newSelectedTimeSeriesData);
             this.selectedTimeSeriesDataDates = [...new Set(mergedAndSortedData.map(item => item.date))];
             this.minTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];
+            this.selectedMinTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];
             this.maxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
+            this.selectedMaxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
             this.selectedTimeSeriesDataMergedAndGrouped = Object.entries(groupByDate(mergedAndSortedData));
         }
     }

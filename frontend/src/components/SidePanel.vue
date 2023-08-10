@@ -4,17 +4,17 @@
       <TabPanel header="Animation">
         <Panel class="panel__item panel-item" header="Animation">
             <span class="panel__calendar p-float-label">
-                <Calendar v-model="startDatetime24h" inputId="start_date" showTime hourFormat="24" show-icon :minDate="startDatetime24h" :maxDate="endDatetime24h" />
+                <Calendar v-model="selectedMinTimeSeriesDataDate" inputId="start_date" showTime hourFormat="24" show-icon :minDate="timeSeriesStore.minTimeSeriesDataDate" :maxDate="timeSeriesStore.maxTimeSeriesDataDate" />
                 <label>Start Date</label>
             </span>
           <span class="panel__calendar p-float-label">
-                <Calendar v-model="endDatetime24h" inputId="end_date" showTime hourFormat="24" show-icon :minDate="startDatetime24h" :maxDate="endDatetime24h" />
+                <Calendar v-model="selectedMaxTimeSeriesDataDate" inputId="end_date" showTime hourFormat="24" show-icon :minDate="timeSeriesStore.minTimeSeriesDataDate" :maxDate="timeSeriesStore.maxTimeSeriesDataDate" />
                 <label>End Date</label>
             </span>
           <div class="panel__animation">
             <label class="panel__animation-label">Animation interval</label>
             <InputNumber v-model="timeSeriesStore.animationInterval" inputId="animation-interval" showButtons
-                         mode="decimal" :step="100" :min="0" :max="10000" suffix=" ms" :disabled="!startDatetime24h || !endDatetime24h" />
+                         mode="decimal" :step="100" :min="0" :max="10000" suffix=" ms" :disabled="!selectedMinTimeSeriesDataDate || !selectedMaxTimeSeriesDataDate" />
           </div>
         </Panel>
       </TabPanel>
@@ -63,15 +63,15 @@ import { useTimeseriesStore } from '@/state/timeseries.state';
 
 const timeSeriesStore = useTimeseriesStore();
 
-const startDatetime24h = ref(timeSeriesStore.minTimeSeriesDataDate);
-const endDatetime24h = ref(timeSeriesStore.maxTimeSeriesDataDate);
+const selectedMinTimeSeriesDataDate = ref(timeSeriesStore.selectedMinTimeSeriesDataDate);
+const selectedMaxTimeSeriesDataDate = ref(timeSeriesStore.selectedMaxTimeSeriesDataDate);
 
-watch(() => timeSeriesStore.minTimeSeriesDataDate,
-    (newDate) => startDatetime24h.value = newDate
+watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate,
+    (newDate) => selectedMinTimeSeriesDataDate.value = newDate
 );
 
-watch(() => timeSeriesStore.maxTimeSeriesDataDate,
-    (newDate) => endDatetime24h.value = newDate
+watch(() => timeSeriesStore.selectedMaxTimeSeriesDataDate,
+    (newDate) => selectedMaxTimeSeriesDataDate.value = newDate
 );
 
 onMounted(() => {
