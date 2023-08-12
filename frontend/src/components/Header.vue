@@ -39,9 +39,9 @@
 <script setup>
 import { ref, watch } from 'vue';
 
-import { useTimeseriesStore } from '@/state/timeseries.state';
+import { useTimeSeriesStore } from '@/state/timeseries.state';
 
-const timeSeriesStore = useTimeseriesStore();
+const timeSeriesStore = useTimeSeriesStore();
 watch(() => timeSeriesStore.selectedTimeSeriesData, selectedTimeSeriesData => {
   timeSeriesStore.updateTimeSeriesData(selectedTimeSeriesData);
 })

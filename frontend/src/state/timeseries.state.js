@@ -28,19 +28,19 @@ function prepareTimeSeriesInfo(data) {
         }));
 }
 
-function groupByDate(mergedAndSortedData) {
-    return mergedAndSortedData
-        .reduce((obj, item) => {
-            const dateKey = item.date;
-            if (!obj[dateKey]) {
-                obj[dateKey] = [];
-            }
-            obj[dateKey].push(item);
+function groupByDateStationIdAndTimeSeriesId(mergedAndSortedData) {
+    return mergedAndSortedData.reduce((obj, item) => {
+            const { date, timeSeriesId, stationId, value } = item;
+            if (!obj[date]) obj[date] = {};
+            if (!obj[date][stationId]) obj[date][stationId] = {};
+
+            obj[date][stationId][timeSeriesId] = value;
+
             return obj;
         }, {});
 }
 
-export const useTimeseriesStore = defineStore('timeseries', {
+export const useTimeSeriesStore = defineStore('timeseries', {
     state: () => ({
         timeSeries: [timeseriesDataPrecipitation, timeseriesDataTemperature],
         timeSeriesInfoMap: new Map(),
@@ -68,7 +68,7 @@ export const useTimeseriesStore = defineStore('timeseries', {
             this.selectedMinTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];
             this.maxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
             this.selectedMaxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
-            this.selectedTimeSeriesDataMergedAndGrouped = Object.entries(groupByDate(mergedAndSortedData));
+            this.selectedTimeSeriesDataMergedAndGrouped = Object.entries(groupByDateStationIdAndTimeSeriesId(mergedAndSortedData));
         }
     }
 });

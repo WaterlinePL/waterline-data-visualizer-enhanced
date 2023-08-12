@@ -1,14 +1,6 @@
 <template>
   <div class="content__map">
-    <div class="map__leaflet-container">
-      <div class="map__leaflet" ref="mapLeaflet">
-
-      </div>
-    </div>
-<!--    <l-map :zoom="zoom" :center="center" ref="map">-->
-<!--      <l-tile-layer :url="url"></l-tile-layer>-->
-<!--      <l-marker v-for="(point, index) in points" :key="index" :lat-lng="point.latlng" :icon="getCustomIcon()"></l-marker>-->
-<!--    </l-map>-->
+    <LeafletMap :points="points" />
     <div class="content__map-scale">
       <div class="map-scale__scale-value">
         <p class="scale-value__value scale-value__value--top">143.20</p>
@@ -52,12 +44,12 @@
 </template>
 
 <script setup>
-import "leaflet/dist/leaflet.js";
 import {ref, watch} from "vue";
 
-import {useTimeseriesStore} from '@/state/timeseries.state';
+import {useTimeSeriesStore} from '@/state/timeseries.state';
+import LeafletMap from "@/components/LeafletMap.vue";
 
-const timeSeriesStore = useTimeseriesStore();
+const timeSeriesStore = useTimeSeriesStore();
 const isAnimating = ref(timeSeriesStore.isAnimating);
 const progressValue = ref(0);
 
@@ -85,6 +77,7 @@ const animate = () => {
   }
 
   const [key, dataArray] = timeSeriesData.value[animationIndex];
+  console.log(timeSeriesData.value);
   console.log(`Index: ${animationIndex}`);
   console.log(`Key: ${key}`);
   console.log(`Data Array:`, dataArray);
@@ -117,55 +110,20 @@ const stopAnimation = () => {
   animationNow.value = animationStart.value;
 }
 
+const points = ref([
+  { 250180420: {2: 28.7, 3: 7.28} },
+  { 250180430: {2: 17.4, 3: 4.17} },
+  { 250180440: {2: 12.8, 3: 8.12} },
+  { 250180450: {2: 9.4, 3: 4.9} },
+  { 250180470: {2: 12.6, 3: 6.12} },
+  { 250180510: {2: 10, 3: 0.1} },
+  { 250180530: {2: 7.6, 3: 6.7} }
+]);
 
-// const url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-// let zoom = 6;
-// let center = [51.19066, 18.6592];
-//
-// const points = ref([
-//   {
-//     "id": "250180460",
-//     "stationName": "ADAMOWICE",
-//     "value": "95414",
-//     "latlng": [51.94225, 20.45963]
-//   },
-//   {
-//     "id": "254230010",
-//     "stationName": "ALEKSANDRÓWKA",
-//     "value": "91908",
-//     "latlng": [51.19066, 18.6592]
-//   },
-//   {
-//     "id": "250180220",
-//     "stationName": "BORÓW",
-//     "value": "95403",
-//     "latlng": [52.52514, 20.95634]
-//   }
-// ]);
-//
-// function getCustomIcon() {
-//   const iconHTML = `
-//     <div style="width: 20px; height: 20px; display: flex;">
-//       <div style="flex: 1; background-color: red"></div>
-//       <div style="flex: 1; background-color: green"></div>
-//     </div>
-//   `;
-//   return L.divIcon({
-//     html: iconHTML,
-//     iconSize: [20, 20],
-//     iconAnchor: [20, 20]
-//   });
-// }
 </script>
 
 
 <style>
-.map__leaflet-container {
-  width: 100%;
-  height: 100%;
-  border: 1px solid green;
-}
-
 .content__map {
   display: flex;
   flex-direction: row;

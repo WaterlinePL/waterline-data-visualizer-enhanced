@@ -59,9 +59,9 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { useTimeseriesStore } from '@/state/timeseries.state';
+import { useTimeSeriesStore } from '@/state/timeseries.state';
 
-const timeSeriesStore = useTimeseriesStore();
+const timeSeriesStore = useTimeSeriesStore();
 
 const selectedMinTimeSeriesDataDate = ref(timeSeriesStore.selectedMinTimeSeriesDataDate);
 const selectedMaxTimeSeriesDataDate = ref(timeSeriesStore.selectedMaxTimeSeriesDataDate);
