@@ -4,8 +4,9 @@
   "description": "Temperature data from IMGW stations",
   "valueLabel": "temperature",
   "metricLabel": "[°C]",
-  "minColor": "#FFF000",
-  "maxColor": "#000FFF",
+  "maxColor": "#00BFFF",
+  "midColor": "#87CEEB",
+  "minColor": "#E0FFFF",
   "data": [
     {
       "id": 0,

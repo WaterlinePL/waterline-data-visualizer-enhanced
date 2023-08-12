@@ -4,8 +4,9 @@
   "description": "Polygons random data (random_value_1)",
   "valueLabel": "precipitation",
   "metricLabel": "[mm]",
-  "minColor": "#FFF000",
-  "maxColor": "#000FFF",
+  "maxColor": "#FFA500",
+  "midColor": "#FFFF00",
+  "minColor": "#00FF00",
   "data": [
     {
       "id": 0,
