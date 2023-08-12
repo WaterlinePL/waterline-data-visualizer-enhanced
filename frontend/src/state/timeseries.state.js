@@ -61,7 +61,7 @@ export const useTimeseriesStore = defineStore('timeseries', {
              this.timeSeriesInfoMap.set(timeSeriesInfo.id, timeSeriesInfo);
           });
         },
-        updateTimeseriesData(newSelectedTimeSeriesData) {
+        updateTimeSeriesData(newSelectedTimeSeriesData) {
             const mergedAndSortedData = prepareData(newSelectedTimeSeriesData);
             this.selectedTimeSeriesDataDates = [...new Set(mergedAndSortedData.map(item => item.date))];
             this.minTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];

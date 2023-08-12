@@ -1,9 +1,14 @@
 <template>
   <div class="content__map">
-    <l-map :zoom="zoom" :center="center" ref="map">
-      <l-tile-layer :url="url"></l-tile-layer>
-      <l-marker v-for="(point, index) in points" :key="index" :lat-lng="point.latlng" :icon="getCustomIcon()"></l-marker>
-    </l-map>
+    <div class="map__leaflet-container">
+      <div class="map__leaflet" ref="mapLeaflet">
+
+      </div>
+    </div>
+<!--    <l-map :zoom="zoom" :center="center" ref="map">-->
+<!--      <l-tile-layer :url="url"></l-tile-layer>-->
+<!--      <l-marker v-for="(point, index) in points" :key="index" :lat-lng="point.latlng" :icon="getCustomIcon()"></l-marker>-->
+<!--    </l-map>-->
     <div class="content__map-scale">
       <div class="map-scale__scale-value">
         <p class="scale-value__value scale-value__value--top">143.20</p>
@@ -37,18 +42,18 @@
       <ProgressBar :value="progressValue"></ProgressBar>
     </div>
     <div class="controllers__controls">
-      <Button @click="startAnimation" class="controls__button controls__button--play" icon="pi pi-play" rounded aria-label="Play" v-if="!isAnimating" :disabled="!timeSeriesStore.minTimeSeriesDataDate || !timeSeriesStore.maxTimeSeriesDataDate" />
+      <Button @click="startAnimation" class="controls__button controls__button--play" icon="pi pi-play" rounded aria-label="Play"
+              v-if="!isAnimating" :disabled="!timeSeriesStore.minTimeSeriesDataDate || !timeSeriesStore.maxTimeSeriesDataDate" />
       <Button @click="pauseAnimation" class="controls__button controls__button--pause" icon="pi pi-pause" rounded aria-label="Pause" v-else />
-      <Button @click="stopAnimation" class="controls__button  controls__button--stop" icon="pi pi-stop" severity="danger" rounded aria-label="Stop" :disabled="!progressValue" />
+      <Button @click="stopAnimation" class="controls__button  controls__button--stop" icon="pi pi-stop" severity="danger"
+              rounded aria-label="Stop" :disabled="!progressValue" />
     </div>
   </div>
 </template>
 
 <script setup>
 import "leaflet/dist/leaflet.js";
-import {LMap, LMarker, LTileLayer} from "@vue-leaflet/vue-leaflet";
 import {ref, watch} from "vue";
-import * as L from "leaflet";
 
 import {useTimeseriesStore} from '@/state/timeseries.state';
 
@@ -113,48 +118,54 @@ const stopAnimation = () => {
 }
 
 
-const url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-let zoom = 6;
-let center = [51.19066, 18.6592];
-
-const points = ref([
-  {
-    "id": "250180460",
-    "stationName": "ADAMOWICE",
-    "value": "95414",
-    "latlng": [51.94225, 20.45963]
-  },
-  {
-    "id": "254230010",
-    "stationName": "ALEKSANDRÓWKA",
-    "value": "91908",
-    "latlng": [51.19066, 18.6592]
-  },
-  {
-    "id": "250180220",
-    "stationName": "BORÓW",
-    "value": "95403",
-    "latlng": [52.52514, 20.95634]
-  }
-]);
-
-function getCustomIcon() {
-  const iconHTML = `
-    <div style="width: 20px; height: 20px; display: flex;">
-      <div style="flex: 1; background-color: red"></div>
-      <div style="flex: 1; background-color: green"></div>
-    </div>
-  `;
-  return L.divIcon({
-    html: iconHTML,
-    iconSize: [20, 20],
-    iconAnchor: [20, 20]
-  });
-}
+// const url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+// let zoom = 6;
+// let center = [51.19066, 18.6592];
+//
+// const points = ref([
+//   {
+//     "id": "250180460",
+//     "stationName": "ADAMOWICE",
+//     "value": "95414",
+//     "latlng": [51.94225, 20.45963]
+//   },
+//   {
+//     "id": "254230010",
+//     "stationName": "ALEKSANDRÓWKA",
+//     "value": "91908",
+//     "latlng": [51.19066, 18.6592]
+//   },
+//   {
+//     "id": "250180220",
+//     "stationName": "BORÓW",
+//     "value": "95403",
+//     "latlng": [52.52514, 20.95634]
+//   }
+// ]);
+//
+// function getCustomIcon() {
+//   const iconHTML = `
+//     <div style="width: 20px; height: 20px; display: flex;">
+//       <div style="flex: 1; background-color: red"></div>
+//       <div style="flex: 1; background-color: green"></div>
+//     </div>
+//   `;
+//   return L.divIcon({
+//     html: iconHTML,
+//     iconSize: [20, 20],
+//     iconAnchor: [20, 20]
+//   });
+// }
 </script>
 
 
 <style>
+.map__leaflet-container {
+  width: 100%;
+  height: 100%;
+  border: 1px solid green;
+}
+
 .content__map {
   display: flex;
   flex-direction: row;

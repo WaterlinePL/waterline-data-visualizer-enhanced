@@ -43,7 +43,7 @@ import { useTimeseriesStore } from '@/state/timeseries.state';
 
 const timeSeriesStore = useTimeseriesStore();
 watch(() => timeSeriesStore.selectedTimeSeriesData, selectedTimeSeriesData => {
-  timeSeriesStore.updateTimeseriesData(selectedTimeSeriesData);
+  timeSeriesStore.updateTimeSeriesData(selectedTimeSeriesData);
 })
 
 const stationsDialogVisible = ref(false);

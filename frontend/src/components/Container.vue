@@ -18,7 +18,7 @@ import "leaflet/dist/leaflet.js";
 import "leaflet/dist/leaflet.css";
 import Header from "./Header.vue";
 import SidePanel from "./SidePanel.vue";
-import Map from "./Map.vue";
+import Map from "./Content.vue";
 import Footer from "./Footer.vue";
 </script>
 
