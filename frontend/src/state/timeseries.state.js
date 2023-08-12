@@ -15,17 +15,17 @@ function prepareData(data) {
         .sort((a, b) => a.date - b.date);
 }
 
-function prepareTimeSeriesInfo(data) {
-    return data
-        .map(item => ({
-            id: item.id,
-            name: item.name,
-            description: item.description,
-            valueLabel: item.valueLabel,
-            metricLabel: item.metricLabel,
-            minColor: item.minColor,
-            maxColor: item.maxColor
-        }));
+function prepareTimeSeriesInfo(jsonObject) {
+    return {
+        id: jsonObject.id,
+        name: jsonObject.name,
+        description: jsonObject.description,
+        valueLabel: jsonObject.valueLabel,
+        metricLabel: jsonObject.metricLabel,
+        maxColor: jsonObject.maxColor,
+        midColor: jsonObject.midColor,
+        minColor: jsonObject.minColor
+    };
 }
 
 function groupByDateStationIdAndTimeSeriesId(mergedAndSortedData) {
@@ -40,10 +40,26 @@ function groupByDateStationIdAndTimeSeriesId(mergedAndSortedData) {
         }, {});
 }
 
+function getMinAndMaxValuesForTimeSeries(selectedTimeSeriesData) {
+    const minAndMaxValuesForTimeSeries = new Map();
+    selectedTimeSeriesData.forEach(jsonObject => {
+        const timeSeriesId = jsonObject[0].timeSeriesId;
+        const min = jsonObject.reduce((min, obj) => (obj.value < min ? obj.value : min), Infinity);
+        const max = jsonObject.reduce((max, obj) => (obj.value > max ? obj.value : max), -Infinity);
+        minAndMaxValuesForTimeSeries.set(timeSeriesId, {
+            id: timeSeriesId,
+            minValue: min,
+            maxValue: max
+        });
+    });
+    return minAndMaxValuesForTimeSeries;
+}
+
 export const useTimeSeriesStore = defineStore('timeseries', {
     state: () => ({
         timeSeries: [timeseriesDataPrecipitation, timeseriesDataTemperature],
         timeSeriesInfoMap: new Map(),
+        minAndMaxValuesMap: new Map(),
         selectedTimeSeriesData: [],
         selectedTimeSeriesDataDates: [],
         selectedTimeSeriesDataMergedAndGrouped: null,
@@ -56,13 +72,16 @@ export const useTimeSeriesStore = defineStore('timeseries', {
     }),
     actions: {
         initialize() {
-          this.timeSeries.forEach(jsonObject => {
-              let timeSeriesInfo = prepareTimeSeriesInfo(jsonObject);
-             this.timeSeriesInfoMap.set(timeSeriesInfo.id, timeSeriesInfo);
-          });
+            if (this.timeSeriesInfoMap.size === 0) {
+                this.timeSeries.forEach(jsonObject => {
+                    let timeSeriesInfo = prepareTimeSeriesInfo(jsonObject);
+                    this.timeSeriesInfoMap.set(timeSeriesInfo.id, timeSeriesInfo);
+                });
+            }
         },
         updateTimeSeriesData(newSelectedTimeSeriesData) {
             const mergedAndSortedData = prepareData(newSelectedTimeSeriesData);
+            this.minAndMaxValuesMap = getMinAndMaxValuesForTimeSeries(newSelectedTimeSeriesData);
             this.selectedTimeSeriesDataDates = [...new Set(mergedAndSortedData.map(item => item.date))];
             this.minTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];
             this.selectedMinTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];

@@ -3,14 +3,16 @@ import stationsData from '../data/point/stations.json'
 
 export const useStationsStore = defineStore('stations', {
     state: () => ({
-        stations: [stationsData],
+        stations: [...stationsData],
         stationsMap: new Map(),
     }),
     actions: {
         initialize() {
-            this.stations.forEach(station => {
-               this.stationsMap.set(station.id, station);
-            });
+            if (this.stationsMap.size === 0) {
+                this.stations.forEach(station => {
+                    this.stationsMap.set(station.id, station);
+                });
+            }
         }
     }
 });

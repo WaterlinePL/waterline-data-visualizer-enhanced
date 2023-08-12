@@ -50,6 +50,8 @@ import {useTimeSeriesStore} from '@/state/timeseries.state';
 import LeafletMap from "@/components/LeafletMap.vue";
 
 const timeSeriesStore = useTimeSeriesStore();
+timeSeriesStore.initialize();
+
 const isAnimating = ref(timeSeriesStore.isAnimating);
 const progressValue = ref(0);
 
