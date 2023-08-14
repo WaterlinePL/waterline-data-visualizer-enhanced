@@ -1,8 +1,6 @@
 <template>
   <div class="map__leaflet-container" ref="mapLeaflet">
   </div>
-  <Button @click="testButton" class="" />
-
 </template>
 
 <script setup>
@@ -21,19 +19,10 @@ stationsStore.initialize();
 const timeSeriesStore = useTimeSeriesStore();
 timeSeriesStore.initialize();
 
-const testButton = () => {
-  props.points.forEach(dataObject => {
-    for (const [key, value] of Object.entries(dataObject)) {
-      let station = stationsStore.stationsMap.get(parseInt(key));
-      addMarker(station.type, station.coordinates, value);
-    }
-  });
-}
-
 const mapLeaflet = ref(null);
 
 const props = defineProps({
-  points: Array,
+  points: Object,
 });
 
 const map = ref(null);
@@ -46,10 +35,14 @@ onMounted(() => {
   addTileLayer();
 });
 
-watch(props.points, () => {
-  clearMarkers();
-  addMarkers();
-});
+watch(
+    () => props.points,
+    () => {
+      clearMarkers();
+      addMarkers();
+    },
+    { deep: true }
+);
 
 function initMap() {
   map.value = L.map(mapLeaflet.value).setView(center, zoom);
@@ -60,12 +53,10 @@ function addTileLayer() {
 }
 
 function addMarkers() {
-  props.points.forEach(dataObject => {
-    for (const [key, value] of Object.entries(dataObject)) {
-      let station = stationsStore.stationsMap.get(parseInt(key));
-      addMarker(station.type, station.coordinates, value);
-    }
-  });
+  for (const [stationId, value] of Object.entries(props.points)) {
+    let station = stationsStore.stationsMap.get(parseInt(stationId));
+    addMarker(station.type, station.coordinates, value);
+  }
 }
 
 function clearMarkers() {
@@ -107,7 +98,9 @@ function getCustomIcon(options) {
   const iconHTML = `
     <div class="map__marker">
       <div class="marker__content">
-          ${options.map(({ color, timeSeriesId }) => `<div style="background-color: ${color};" class="marker__content-part marker__content-part-${timeSeriesId}"></div>`).join('')}
+          ${options.map(
+              ({ color, timeSeriesId }) => `<div style="background-color: ${color};" class="marker__content-part marker__content-part-${timeSeriesId}"></div>`
+          ).join('')}
       </div>
       <div class="marker__footer"></div>
     </div>

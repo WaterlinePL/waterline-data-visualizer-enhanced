@@ -55,6 +55,8 @@ timeSeriesStore.initialize();
 const isAnimating = ref(timeSeriesStore.isAnimating);
 const progressValue = ref(0);
 
+const points = ref({});
+
 const animationStart = ref();
 const animationEnd = ref();
 const animationNow = ref("Select animation start and end dates to run an animation");
@@ -78,12 +80,8 @@ const animate = () => {
     return;
   }
 
-  const [key, dataArray] = timeSeriesData.value[animationIndex];
-  console.log(timeSeriesData.value);
-  console.log(`Index: ${animationIndex}`);
-  console.log(`Key: ${key}`);
-  console.log(`Data Array:`, dataArray);
-
+  const [key, data] = timeSeriesData.value[animationIndex];
+  points.value = data;
   animationNow.value = new Date(key).toLocaleString();
   progressValue.value = ((animationIndex + 1) / timeSeriesData.value.length) * 100;
   animationIndex++;
@@ -111,16 +109,6 @@ const stopAnimation = () => {
   progressValue.value = 0;
   animationNow.value = animationStart.value;
 }
-
-const points = ref([
-  { 250180420: {2: 28.7, 3: 7.28} },
-  { 250180430: {2: 17.4, 3: 4.17} },
-  { 250180440: {2: 12.8, 3: 8.12} },
-  { 250180450: {2: 9.4, 3: 4.9} },
-  { 250180470: {2: 12.6, 3: 6.12} },
-  { 250180510: {2: 10, 3: 0.1} },
-  { 250180530: {2: 7.6, 3: 6.7} }
-]);
 
 </script>
 
