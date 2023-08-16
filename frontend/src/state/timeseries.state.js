@@ -62,13 +62,15 @@ export const useTimeSeriesStore = defineStore('timeseries', {
         minAndMaxValuesMap: new Map(),
         selectedTimeSeriesData: [],
         selectedTimeSeriesDataDates: [],
+        selectedTimeSeriesIds: [],
         selectedTimeSeriesDataMergedAndGrouped: null,
         minTimeSeriesDataDate: null,
         selectedMinTimeSeriesDataDate: null,
         maxTimeSeriesDataDate: null,
         selectedMaxTimeSeriesDataDate: null,
         isAnimating: false,
-        animationInterval: 1000
+        clearLeafletMap: false,
+        animationInterval: 2000
     }),
     actions: {
         initialize() {
@@ -88,6 +90,7 @@ export const useTimeSeriesStore = defineStore('timeseries', {
             this.maxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
             this.selectedMaxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
             this.selectedTimeSeriesDataMergedAndGrouped = Object.entries(groupByDateStationIdAndTimeSeriesId(mergedAndSortedData));
+            this.selectedTimeSeriesIds = [...new Set(mergedAndSortedData.map(item => item.timeSeriesId))];
         }
     }
 });

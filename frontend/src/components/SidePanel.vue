@@ -1,20 +1,22 @@
 <template>
-  <TabView class="panel">
+  <TabView class="panel" v-model:activeIndex="activeIndex">
     <div class="panel__tab">
       <TabPanel header="Animation">
         <Panel class="panel__item panel-item" header="Animation">
             <span class="panel__calendar p-float-label">
-                <Calendar v-model="selectedMinTimeSeriesDataDate" inputId="start_date" showTime hourFormat="24" show-icon :minDate="timeSeriesStore.minTimeSeriesDataDate" :maxDate="timeSeriesStore.maxTimeSeriesDataDate" />
+                <Calendar v-model="timeSeriesStore.selectedMinTimeSeriesDataDate" inputId="start_date" showTime hourFormat="24" dateFormat="dd/mm/yy"
+                          show-icon :minDate="timeSeriesStore.minTimeSeriesDataDate" :maxDate="timeSeriesStore.maxTimeSeriesDataDate" />
                 <label>Start Date</label>
             </span>
           <span class="panel__calendar p-float-label">
-                <Calendar v-model="selectedMaxTimeSeriesDataDate" inputId="end_date" showTime hourFormat="24" show-icon :minDate="timeSeriesStore.minTimeSeriesDataDate" :maxDate="timeSeriesStore.maxTimeSeriesDataDate" />
+                <Calendar v-model="timeSeriesStore.selectedMaxTimeSeriesDataDate" inputId="end_date" showTime hourFormat="24" dateFormat="dd/mm/yy"
+                          show-icon :minDate="timeSeriesStore.minTimeSeriesDataDate" :maxDate="timeSeriesStore.maxTimeSeriesDataDate" />
                 <label>End Date</label>
             </span>
           <div class="panel__animation">
             <label class="panel__animation-label">Animation interval</label>
             <InputNumber v-model="timeSeriesStore.animationInterval" inputId="animation-interval" showButtons
-                         mode="decimal" :step="100" :min="0" :max="10000" suffix=" ms" :disabled="!selectedMinTimeSeriesDataDate || !selectedMaxTimeSeriesDataDate" />
+                         mode="decimal" :step="100" :min="0" :max="10000" suffix=" ms" :disabled="!timeSeriesStore.selectedMinTimeSeriesDataDate || !timeSeriesStore.selectedMaxTimeSeriesDataDate" />
           </div>
         </Panel>
       </TabPanel>
@@ -58,21 +60,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useTimeSeriesStore } from '@/state/timeseries.state';
 
 const timeSeriesStore = useTimeSeriesStore();
 
-const selectedMinTimeSeriesDataDate = ref(timeSeriesStore.selectedMinTimeSeriesDataDate);
-const selectedMaxTimeSeriesDataDate = ref(timeSeriesStore.selectedMaxTimeSeriesDataDate);
-
-watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate,
-    (newDate) => selectedMinTimeSeriesDataDate.value = newDate
-);
-
-watch(() => timeSeriesStore.selectedMaxTimeSeriesDataDate,
-    (newDate) => selectedMaxTimeSeriesDataDate.value = newDate
-);
+let activeIndex = 0;
 
 onMounted(() => {
   chartData.value = setChartData();

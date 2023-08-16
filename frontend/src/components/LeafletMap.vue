@@ -1,6 +1,24 @@
 <template>
   <div class="map__leaflet-container" ref="mapLeaflet">
   </div>
+  <div class="content__map-scales">
+    <div class="content__map-scale" v-for="timeSeriesId in timeSeriesStore.selectedTimeSeriesIds" :key="timeSeriesId">
+      <p class="map-scale__title">{{ getValueLabelForScale(timeSeriesId) }}</p>
+      <div class="map-scale__values">
+        <div class="map-scale__scale-value">
+          <p class="scale-value__value scale-value__value--low">{{ getMinValueForScale(timeSeriesId) }}</p>
+          <p class="scale-value__unit scale-value__unit--low">{{ getMetricLabelForScale(timeSeriesId) }}</p>
+        </div>
+        <div class="map-scale__wrapper">
+          <div class="map-scale__scale-bar" :style="getLinearGradientBackground(timeSeriesId)"></div>
+        </div>
+        <div class="map-scale__scale-value">
+          <p class="scale-value__value scale-value__value--top">{{ getMaxValueForScale(timeSeriesId) }}</p>
+          <p class="scale-value__unit scale-value__unit--top">{{ getMetricLabelForScale(timeSeriesId) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -44,6 +62,11 @@ watch(
     { deep: true }
 );
 
+watch(() => timeSeriesStore.clearLeafletMap, () => {
+  clearMarkers();
+  timeSeriesStore.clearLeafletMap = false;
+});
+
 function initMap() {
   map.value = L.map(mapLeaflet.value).setView(center, zoom);
 }
@@ -53,10 +76,14 @@ function addTileLayer() {
 }
 
 function addMarkers() {
+  const coordinates = [];
   for (const [stationId, value] of Object.entries(props.points)) {
     let station = stationsStore.stationsMap.get(parseInt(stationId));
     addMarker(station.type, station.coordinates, value);
+    coordinates.push(station.coordinates);
   }
+  const bounds = L.latLngBounds(coordinates);
+  map.value.fitBounds(bounds);
 }
 
 function clearMarkers() {
@@ -120,12 +147,43 @@ function mapValueToThreeColorGradient(value, minValue, maxValue, color1, color2,
 
   return interpolatedColor.hex();
 }
+
+function getMinValueForScale(timeSeriesId) {
+  const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(timeSeriesId);
+  return jsonObject.minValue.toFixed(2);
+}
+
+function getMaxValueForScale(timeSeriesId) {
+  const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(timeSeriesId);
+  return jsonObject.maxValue.toFixed(2);
+}
+
+function getMetricLabelForScale(timeSeriesId) {
+  const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
+  return timeSeriesInfo.metricLabel;
+}
+
+function getValueLabelForScale(timeSeriesId) {
+  const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
+  return timeSeriesInfo.valueLabel;
+}
+
+function getLinearGradientBackground(timeSeriesId) {
+  const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
+  return `background: linear-gradient(to right, ${timeSeriesInfo.minColor}, ${timeSeriesInfo.midColor}, ${timeSeriesInfo.maxColor})`;
+}
+
 </script>
 
 <style>
+
 .map__leaflet-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 800px;
   width: 100%;
   height: 100%;
+  margin-bottom: 1rem;
 }
 
 .leaflet-div-icon {
@@ -155,5 +213,52 @@ function mapValueToThreeColorGradient(value, minValue, maxValue, color1, color2,
   border-left: 16px solid transparent;
   border-right: 16px solid transparent;
   border-top: 10px solid black;
+}
+
+.content__map-scales {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.content__map-scale {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  width: 48%;
+}
+
+.map-scale__title {
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.map-scale__values {
+  display: flex;
+  flex-direction: row;
+}
+
+.map-scale__wrapper {
+  display: flex;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+}
+
+.map-scale__scale-bar {
+  height: 100%;
+  width: 90%;
+}
+
+.map-scale__scale-value {
+  display: flex;
+  flex-direction: row;
+}
+
+.scale-value__value,
+.scale-value__unit {
+  font-weight: bold;
+  margin: 0 0.125rem;
 }
 </style>

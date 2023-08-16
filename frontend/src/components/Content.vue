@@ -1,19 +1,6 @@
 <template>
   <div class="content__map">
     <LeafletMap :points="points" />
-    <div class="content__map-scale">
-      <div class="map-scale__scale-value">
-        <p class="scale-value__value scale-value__value--top">143.20</p>
-        <p class="scale-value__unit scale-value__unit--top">[mm]</p>
-      </div>
-      <div class="map-scale__wrapper">
-        <div class="map-scale__scale-bar"></div>
-      </div>
-      <div class="map-scale__scale-value">
-        <p class="scale-value__value scale-value__value--low">0.00</p>
-        <p class="scale-value__unit scale-value__unit--low">[mm]</p>
-      </div>
-    </div>
   </div>
   <div class="content__controllers">
     <div class="controllers__dates">
@@ -61,30 +48,45 @@ const animationStart = ref();
 const animationEnd = ref();
 const animationNow = ref("Select animation start and end dates to run an animation");
 
+let animationIntervalId = null;
+
+let startAnimationIndex = null;
+let currentAnimationIndex = null;
+let endAnimationIndex = null;
+
 watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate, selectedMinTimeSeriesDataDate => {
   animationStart.value = selectedMinTimeSeriesDataDate.toLocaleString();
   animationNow.value = selectedMinTimeSeriesDataDate.toLocaleString();
+  startAnimationIndex = findAnimationIndex(selectedMinTimeSeriesDataDate);
+  currentAnimationIndex = startAnimationIndex;
+  // eslint-disable-next-line no-unused-vars
+  const [key, data] = timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped[startAnimationIndex];
+  points.value = data;
 });
 
 watch(() => timeSeriesStore.selectedMaxTimeSeriesDataDate, selectedMaxTimeSeriesDataDate => {
   animationEnd.value = selectedMaxTimeSeriesDataDate.toLocaleString();
+  endAnimationIndex = findAnimationIndex(selectedMaxTimeSeriesDataDate);
 });
 
-let animationIntervalId = null;
-let animationIndex = 0;
-
+function findAnimationIndex(date) {
+  return timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped.findIndex(
+      // eslint-disable-next-line no-unused-vars
+      ([key, value]) => new Date(key).getTime() === date.getTime()
+  );
+}
 const animate = () => {
   const timeSeriesData = ref(timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped);
-  if (animationIndex >= timeSeriesData.value.length) {
+  if (currentAnimationIndex > endAnimationIndex) {
     stopAnimation();
     return;
   }
 
-  const [key, data] = timeSeriesData.value[animationIndex];
+  const [key, data] = timeSeriesData.value[currentAnimationIndex];
   points.value = data;
   animationNow.value = new Date(key).toLocaleString();
-  progressValue.value = ((animationIndex + 1) / timeSeriesData.value.length) * 100;
-  animationIndex++;
+  progressValue.value = ((currentAnimationIndex - startAnimationIndex) / (endAnimationIndex - startAnimationIndex)) * 100;
+  currentAnimationIndex++;
 };
 
 const startAnimation = () => {
@@ -105,9 +107,10 @@ const pauseAnimation = () => {
 const stopAnimation = () => {
   isAnimating.value = false;
   clearInterval(animationIntervalId);
-  animationIndex = 0;
+  currentAnimationIndex = startAnimationIndex;
   progressValue.value = 0;
   animationNow.value = animationStart.value;
+  timeSeriesStore.clearLeafletMap = true;
 }
 
 </script>
@@ -116,41 +119,10 @@ const stopAnimation = () => {
 <style>
 .content__map {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   min-height: 800px;
-}
-
-.content__map-scale {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-left: 1rem;
-
-}
-.map-scale__wrapper {
-  display: flex;
-  justify-content: space-around;
-  height: 100%;
-  width: 100%;
-  padding: .75rem 0;
-}
-
-.map-scale__scale-bar {
-  height: 100%;
-  width: 70%;
-  background: linear-gradient(#896DB8, #673AB7);
-}
-
-.map-scale__scale-value {
-  display: flex;
-  flex-direction: column;
-}
-
-.scale-value__value,
-.scale-value__unit {
-  font-weight: bold;
 }
 
 .content__controllers {
@@ -160,7 +132,7 @@ const stopAnimation = () => {
 }
 
 .controllers__progress-bar .p-progressbar {
-  height: 10px;
+  height: 15px;
 }
 
 .controllers__dates {
