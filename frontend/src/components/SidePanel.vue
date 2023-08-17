@@ -22,8 +22,8 @@
       </TabPanel>
     </div>
     <div class="panel__tab">
-      <TabPanel header="Details">
-        <Panel class="panel-item" header="Time Series">
+      <TabPanel header="Details" :disabled="timeSeriesStore.selectedTimeSeriesIds.length === 0 && !detailsStore.selectedStation">
+        <Panel class="panel-item" header="Time Series" v-if="timeSeriesStore.selectedTimeSeriesIds.length > 0">
           <div class="panel__timeseries">
             <div class="timeseries__value" v-for="timeSeriesId in timeSeriesStore.selectedTimeSeriesIds" :key="timeSeriesId">
               <Checkbox v-model="visibleTimeSeriesIds" :inputId="'timeSeries-' + timeSeriesId" :value="timeSeriesId" />
@@ -31,28 +31,30 @@
             </div>
           </div>
         </Panel>
-        <Panel class="panel-item" header="Details">
+        <Panel class="panel-item" header="Details" v-if="detailsStore.selectedStation">
           <div class="panel__details">
             <div class="details__info">
               <div class="info__parameter">
                 <p class="parameter__label">Name</p>
-                <p class="parameter__value">LIPINY</p>
+                <p class="parameter__value">{{ detailsStore.selectedStationName }}</p>
               </div>
               <div class="info__parameter">
                 <p class="parameter__label">Latitude</p>
-                <p class="parameter__value">51.3136</p>
+                <p class="parameter__value">{{ detailsStore.selectedCoordinatesLatitude }}</p>
               </div>
               <div class="info__parameter">
-                <p class="parameter__label">Longitute</p>
-                <p class="parameter__value">21.7283</p>
+                <p class="parameter__label">Longitude</p>
+                <p class="parameter__value">{{ detailsStore.selectedCoordinatesLongitude }}</p>
               </div>
-              <div class="info__parameter">
-                <p class="parameter__label">Value</p>
-                <p class="parameter__value">0.3 [mm]</p>
+              <div class="info__parameter" v-for="selectedValue in detailsStore.selectedValues" :key="selectedValue.title">
+                <p class="parameter__label">{{ selectedValue.title }}
+                  <span class="parameter__annotation">({{ selectedValue.from }})</span>
+                </p>
+                <p class="parameter__value">{{ selectedValue.value }}</p>
               </div>
               <div class="info__parameter">
                 <p class="parameter__label">Date</p>
-                <p class="parameter__value">Aug 10, 2021, 12:00:00 AM</p>
+                <p class="parameter__value">{{ timeSeriesStore.animationNow }}</p>
               </div>
             </div>
             <Divider class="details__divider"></Divider>
@@ -264,16 +266,19 @@ function getTimeSeriesName(timeSeriesId) {
 
 .info__parameter {
   text-align: left;
-  margin-bottom: .75rem;
+  margin-bottom: 1rem;
 }
 
 .info__parameter .parameter__label {
   font-size: 0.875rem;
   color: slategray;
-  margin-bottom: .25rem;
+  margin-bottom: .5rem;
+  text-transform: capitalize;
 }
 
-.info__parameter .parameter__value {
+.parameter__annotation {
+  color: #70809080;
+  text-transform: none;
 }
 
 .details__chart {

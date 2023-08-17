@@ -82,7 +82,7 @@ function addMarkers() {
   const coordinates = [];
   for (const [stationId, value] of Object.entries(props.points)) {
     let station = stationsStore.stationsMap.get(parseInt(stationId));
-    addMarker(station.type, station.coordinates, value);
+    addMarker(station, value);
     coordinates.push(station.coordinates);
   }
   const bounds = L.latLngBounds(coordinates);
@@ -97,10 +97,10 @@ function clearMarkers() {
   });
 }
 
-function addMarker(type, coordinates, values) {
-  switch (type) {
+function addMarker(station, values) {
+  switch (station.type) {
     case 'POINT':
-      addPointMarker(coordinates, values);
+      addPointMarker(station, values);
       break;
     case 'LINE':
       console.log('Line support not implemented');
@@ -111,7 +111,7 @@ function addMarker(type, coordinates, values) {
   }
 }
 
-function addPointMarker(coordinates, values) {
+function addPointMarker(station, values) {
   const options = [];
   for (const [timeSeriesId, val] of Object.entries(values)) {
     const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(parseInt(timeSeriesId));
@@ -121,8 +121,12 @@ function addPointMarker(coordinates, values) {
       timeSeriesId: timeSeriesId
     });
   }
-  const marker = L.marker(coordinates.flat(), { icon: getCustomIcon(options) }).addTo(map.value);
-  marker.on('click', () => detailsStore.activePanelIndex = 1);
+  const marker = L.marker(station.coordinates.flat(), { icon: getCustomIcon(options) }).addTo(map.value);
+  marker.on('click', event => {
+    const clickedMarker = event.target;
+    const coords = clickedMarker.getLatLng();
+    detailsStore.clickOnLeafletMap(station, coords, values)
+  });
 }
 
 function getCustomIcon(options) {

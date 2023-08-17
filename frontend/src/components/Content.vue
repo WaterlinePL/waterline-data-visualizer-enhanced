@@ -6,15 +6,15 @@
     <div class="controllers__dates">
       <div class="dates__date">
         <p class="date__label date__label--left">Animation Start</p>
-        <p class="date__time">{{ animationStart }}</p>
+        <p class="date__time">{{ timeSeriesStore.animationStart }}</p>
       </div>
       <div class="dates__date">
         <p class="date__label date__label--center">Now</p>
-        <p class="date__time">{{ animationNow }}</p>
+        <p class="date__time">{{ timeSeriesStore.animationNow }}</p>
       </div>
       <div class="dates__date">
         <p class="date__label date__label--right">Animation End</p>
-        <p class="date__time">{{ animationEnd }}</p>
+        <p class="date__time">{{ timeSeriesStore.animationEnd }}</p>
       </div>
     </div>
     <div class="controllers__progress-bar">
@@ -44,10 +44,6 @@ const progressValue = ref(0);
 
 const points = ref({});
 
-const animationStart = ref();
-const animationEnd = ref();
-const animationNow = ref("Select animation start and end dates to run an animation");
-
 let animationIntervalId = null;
 
 let startAnimationIndex = null;
@@ -55,8 +51,8 @@ let currentAnimationIndex = null;
 let endAnimationIndex = null;
 
 watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate, selectedMinTimeSeriesDataDate => {
-  animationStart.value = selectedMinTimeSeriesDataDate.toLocaleString();
-  animationNow.value = selectedMinTimeSeriesDataDate.toLocaleString();
+  timeSeriesStore.animationStart = selectedMinTimeSeriesDataDate.toLocaleString();
+  timeSeriesStore.animationNow = selectedMinTimeSeriesDataDate.toLocaleString();
   startAnimationIndex = findAnimationIndex(selectedMinTimeSeriesDataDate);
   currentAnimationIndex = startAnimationIndex;
   // eslint-disable-next-line no-unused-vars
@@ -65,7 +61,7 @@ watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate, selectedMinTimeSeries
 });
 
 watch(() => timeSeriesStore.selectedMaxTimeSeriesDataDate, selectedMaxTimeSeriesDataDate => {
-  animationEnd.value = selectedMaxTimeSeriesDataDate.toLocaleString();
+  timeSeriesStore.animationEnd = selectedMaxTimeSeriesDataDate.toLocaleString();
   endAnimationIndex = findAnimationIndex(selectedMaxTimeSeriesDataDate);
 });
 
@@ -84,7 +80,7 @@ const animate = () => {
 
   const [key, data] = timeSeriesData.value[currentAnimationIndex];
   points.value = data;
-  animationNow.value = new Date(key).toLocaleString();
+  timeSeriesStore.animationNow = new Date(key).toLocaleString();
   progressValue.value = ((currentAnimationIndex - startAnimationIndex) / (endAnimationIndex - startAnimationIndex)) * 100;
   currentAnimationIndex++;
 };
@@ -109,7 +105,7 @@ const stopAnimation = () => {
   clearInterval(animationIntervalId);
   currentAnimationIndex = startAnimationIndex;
   progressValue.value = 0;
-  animationNow.value = animationStart.value;
+  timeSeriesStore.animationNow = timeSeriesStore.animationStart;
   timeSeriesStore.clearLeafletMap = true;
 }
 
