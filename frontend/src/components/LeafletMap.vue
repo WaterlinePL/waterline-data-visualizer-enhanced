@@ -30,12 +30,15 @@ import L from 'leaflet';
 
 import {useStationsStore} from '@/state/stations.state';
 import {useTimeSeriesStore} from '@/state/timeseries.state';
+import {useDetailsStore} from "@/state/details.state";
 
 const stationsStore = useStationsStore();
 stationsStore.initialize();
 
 const timeSeriesStore = useTimeSeriesStore();
 timeSeriesStore.initialize();
+
+const detailsStore = useDetailsStore();
 
 const mapLeaflet = ref(null);
 
@@ -118,7 +121,8 @@ function addPointMarker(coordinates, values) {
       timeSeriesId: timeSeriesId
     });
   }
-  L.marker(coordinates.flat(), { icon: getCustomIcon(options) }).addTo(map.value);
+  const marker = L.marker(coordinates.flat(), { icon: getCustomIcon(options) }).addTo(map.value);
+  marker.on('click', () => detailsStore.activePanelIndex = 1);
 }
 
 function getCustomIcon(options) {

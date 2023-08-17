@@ -7,6 +7,7 @@ import Panel from 'primevue/panel'
 import Calendar from 'primevue/calendar'
 import ProgressBar from "primevue/progressbar";
 import Chart from "primevue/chart";
+import Checkbox from "primevue/checkbox";
 import Divider from "primevue/divider";
 import InputNumber from 'primevue/inputnumber';
 import TabView from 'primevue/tabview';
@@ -32,6 +33,7 @@ app.component('Panel', Panel)
 app.component('Calendar', Calendar)
 app.component('ProgressBar', ProgressBar)
 app.component('Chart', Chart)
+app.component('Checkbox', Checkbox)
 app.component('Divider', Divider)
 app.component('InputNumber', InputNumber)
 app.component('TabView', TabView)

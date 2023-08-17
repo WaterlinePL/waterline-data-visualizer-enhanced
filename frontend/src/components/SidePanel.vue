@@ -1,5 +1,5 @@
 <template>
-  <TabView class="panel" v-model:activeIndex="activeIndex">
+  <TabView class="panel" v-model:activeIndex="detailsStore.activePanelIndex">
     <div class="panel__tab">
       <TabPanel header="Animation">
         <Panel class="panel__item panel-item" header="Animation">
@@ -23,7 +23,14 @@
     </div>
     <div class="panel__tab">
       <TabPanel header="Details">
-        <Panel class="panel-item" header="Time Series"></Panel>
+        <Panel class="panel-item" header="Time Series">
+          <div class="panel__timeseries">
+            <div class="timeseries__value" v-for="timeSeriesId in timeSeriesStore.selectedTimeSeriesIds" :key="timeSeriesId">
+              <Checkbox v-model="visibleTimeSeriesIds" :inputId="'timeSeries-' + timeSeriesId" :value="timeSeriesId" />
+              <label :for="'timeSeries-' + timeSeriesId">{{ getTimeSeriesName(timeSeriesId) }}</label>
+            </div>
+          </div>
+        </Panel>
         <Panel class="panel-item" header="Details">
           <div class="panel__details">
             <div class="details__info">
@@ -60,12 +67,36 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import { useTimeSeriesStore } from '@/state/timeseries.state';
+import { useDetailsStore } from '@/state/details.state';
 
 const timeSeriesStore = useTimeSeriesStore();
+const detailsStore = useDetailsStore();
 
-let activeIndex = 0;
+const visibleTimeSeriesIds = ref([...timeSeriesStore.selectedTimeSeriesIds]);
+
+watch(() => timeSeriesStore.selectedTimeSeriesIds, (newIDs) => {
+  visibleTimeSeriesIds.value =  newIDs;
+});
+
+watch(() => visibleTimeSeriesIds.value, (newIDs, oldIDs) => {
+  if (newIDs.length === 0) {
+    document.querySelectorAll('.map__marker').forEach(element => element.style.display = 'none');
+  } else {
+    document.querySelectorAll('.map__marker').forEach(element => element.style.display = 'flex');
+  }
+
+  if (newIDs.length > oldIDs.length) {
+    newIDs.filter(item => !oldIDs.includes(item))
+      .forEach(item => document.querySelectorAll(`.marker__content-part-${item}`)
+      .forEach(element => element.style.display = 'flex'));
+  } else if (newIDs.length < oldIDs.length) {
+    oldIDs.filter(item => !newIDs.includes(item))
+      .forEach(item => document.querySelectorAll(`.marker__content-part-${item}`)
+      .forEach(element => element.style.display = 'none'));
+  }
+});
 
 onMounted(() => {
   chartData.value = setChartData();
@@ -141,6 +172,11 @@ const setChartOptions = () => {
     }
   };
 }
+
+function getTimeSeriesName(timeSeriesId) {
+  const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
+  return timeSeriesInfo.name;
+}
 </script>
 
 <style>
@@ -201,6 +237,21 @@ const setChartOptions = () => {
 
 .panel .p-tabview-nav-link {
   padding: 1rem !important;
+}
+
+.panel__timeseries {
+  display: flex;
+  flex-direction: column;
+}
+
+.panel__timeseries .p-checkbox {
+  margin-right: 0.5rem;
+}
+
+.timeseries__value {
+  display: flex;
+  justify-content: left;
+  margin: .5rem 0;
 }
 
 .details__info {
