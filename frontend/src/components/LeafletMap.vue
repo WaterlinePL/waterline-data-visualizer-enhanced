@@ -127,6 +127,9 @@ function addPointMarker(station, values) {
     const coords = clickedMarker.getLatLng();
     detailsStore.clickOnLeafletMap(station, coords, values)
   });
+  if (station.id === detailsStore.selectedStationId) {
+    detailsStore.updateSelectedStation(values);
+  }
 }
 
 function getCustomIcon(options) {

@@ -54,7 +54,7 @@
               </div>
               <div class="info__parameter">
                 <p class="parameter__label">Date</p>
-                <p class="parameter__value">{{ timeSeriesStore.animationNow }}</p>
+                <p class="parameter__value">{{ detailsStore.selectedDate }}</p>
               </div>
             </div>
             <Divider class="details__divider"></Divider>
