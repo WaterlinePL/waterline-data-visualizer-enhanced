@@ -133,14 +133,15 @@ function addPointMarker(station, values) {
 }
 
 function addLineMarker(station, values) {
-  const options = {};
+  let options = {};
   for (const [timeSeriesId, val] of Object.entries(values)) {
     const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(parseInt(timeSeriesId));
     const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(parseInt(timeSeriesId));
-    if (!options["color"]) options["color"] = {};
-    options["color"] = mapValueToThreeColorGradient(val, jsonObject.minValue, jsonObject.maxValue, timeSeriesInfo.minColor, timeSeriesInfo.midColor, timeSeriesInfo.maxColor);
-    options["weight"] = 10;
-    options["className"] = `marker__content-part-${timeSeriesId}`;
+    options = {
+      color: mapValueToThreeColorGradient(val, jsonObject.minValue, jsonObject.maxValue, timeSeriesInfo.minColor, timeSeriesInfo.midColor, timeSeriesInfo.maxColor),
+      weight: 10,
+      className: `marker__content-part-${timeSeriesId}`
+    };
   }
   const marker = L.polyline(station.coordinates, options).addTo(map.value);
   marker.on('click', event => {
