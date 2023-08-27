@@ -103,7 +103,7 @@ function addMarker(station, values) {
       addPointMarker(station, values);
       break;
     case 'LINE':
-      console.log('Line support not implemented');
+      addLineMarker(station, values);
       break;
     case 'POLYGON':
       console.log('Polygon support not implemented');
@@ -125,6 +125,25 @@ function addPointMarker(station, values) {
   marker.on('click', event => {
     const clickedMarker = event.target;
     const coords = clickedMarker.getLatLng();
+    detailsStore.clickOnLeafletMap(station, coords, values)
+  });
+  if (station.id === detailsStore.selectedStationId) {
+    detailsStore.updateSelectedStation(values);
+  }
+}
+
+function addLineMarker(station, values) {
+  const options = {};
+  for (const [timeSeriesId, val] of Object.entries(values)) {
+    const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(parseInt(timeSeriesId));
+    const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(parseInt(timeSeriesId));
+    if (!options["color"]) options["color"] = {};
+    options["color"] = mapValueToThreeColorGradient(val, jsonObject.minValue, jsonObject.maxValue, timeSeriesInfo.minColor, timeSeriesInfo.midColor, timeSeriesInfo.maxColor);
+    options["weight"] = 5;
+  }
+  const marker = L.polyline(station.coordinates, options).addTo(map.value);
+  marker.on('click', event => {
+    const coords = event.latlng;
     detailsStore.clickOnLeafletMap(station, coords, values)
   });
   if (station.id === detailsStore.selectedStationId) {
