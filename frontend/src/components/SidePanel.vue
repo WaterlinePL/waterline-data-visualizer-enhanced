@@ -59,7 +59,17 @@
             </div>
             <Divider class="details__divider"></Divider>
             <div class="details__chart">
-              <Chart type="line" :data="chartData" :options="chartOptions" />
+              <div class="chart__value">
+                <Chart type="line" :data="chartData" :options="chartOptions" />
+              </div>
+              <div class="chart__button">
+                <Button icon="pi pi-window-maximize" @click="maximizeChart = true" size="small" text />
+                <Dialog v-model:visible="maximizeChart" :header="'Station Data - ' + detailsStore.selectedStationName" :style="{ width: '60vw' }">
+                  <div class="dialog__chart">
+                    <Chart type="line" :data="chartData" :options="chartOptionsMaximized" />
+                  </div>
+                </Dialog>
+              </div>
             </div>
           </div>
         </Panel>
@@ -113,10 +123,13 @@ watch(() => timeSeriesStore.selectedTimeSeriesData, () => {
 function updateChartData() {
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
+  chartOptionsMaximized.value = setChartOptionsMaximized();
 }
 
+const maximizeChart = ref(false);
 const chartData = ref();
 const chartOptions = ref();
+const chartOptionsMaximized = ref();
 
 const setChartData = () => {
   const chartData = timeSeriesStore.getChartDataForStation(detailsStore.selectedStationId);
@@ -151,6 +164,42 @@ const setChartOptions = () => {
     scales: {
       x: {
         display: false
+      },
+      y: {
+        ticks: {
+          color: textColorSecondary
+        },
+        grid: {
+          color: surfaceBorder
+        }
+      }
+    }
+  };
+}
+
+const setChartOptionsMaximized = () => {
+  const textColor = "black";
+  const textColorSecondary = "slategray";
+  const surfaceBorder = "lightgray";
+
+  return {
+    maintainAspectRatio: false,
+    aspectRatio: 0.6,
+    plugins: {
+      legend: {
+        labels: {
+          color: textColor
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: textColorSecondary
+        },
+        grid: {
+          color: surfaceBorder
+        }
       },
       y: {
         ticks: {
@@ -271,6 +320,29 @@ function getTimeSeriesName(timeSeriesId) {
 }
 
 .details__chart {
+  position: relative;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
+
+.details__chart .chart__button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.details__chart .chart__button .p-button {
+  padding: .5rem .75rem;
+  width: 100%;
+  height: 100%;
+}
+
+.dialog__chart {
+  padding: 1rem;
+}
+
+.p-dialog .p-dialog-content .dialog__chart .p-chart {
+  height: 100%;
+  min-height: 60vh;
+}
+
 </style>
