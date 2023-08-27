@@ -59,7 +59,7 @@
             </div>
             <Divider class="details__divider"></Divider>
             <div class="details__chart">
-              <Chart type="bar" :data="chartData" :options="chartOptions" />
+              <Chart type="line" :data="chartData" :options="chartOptions" />
             </div>
           </div>
         </Panel>
@@ -69,11 +69,13 @@
 </template>
 
 <script setup>
-import {ref, onMounted, watch} from 'vue';
+import {ref, watch} from 'vue';
 import { useTimeSeriesStore } from '@/state/timeseries.state';
 import { useDetailsStore } from '@/state/details.state';
 
 const timeSeriesStore = useTimeSeriesStore();
+timeSeriesStore.initialize();
+
 const detailsStore = useDetailsStore();
 
 const visibleTimeSeriesIds = ref([...timeSeriesStore.selectedTimeSeriesIds]);
@@ -100,68 +102,55 @@ watch(() => visibleTimeSeriesIds.value, (newIDs, oldIDs) => {
   }
 });
 
-onMounted(() => {
+watch(() => detailsStore.selectedStationId, () => {
+  updateChartData();
+});
+
+watch(() => timeSeriesStore.selectedTimeSeriesData, () => {
+  updateChartData();
+});
+
+function updateChartData() {
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
-});
+}
 
 const chartData = ref();
 const chartOptions = ref();
 
 const setChartData = () => {
-  const documentStyle = getComputedStyle(document.documentElement);
+  const chartData = timeSeriesStore.getChartDataForStation(detailsStore.selectedStationId);
 
   return {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        type: 'line',
-        label: 'Dataset 1',
-        borderColor: documentStyle.getPropertyValue('--blue-500'),
-        borderWidth: 2,
-        fill: false,
-        tension: 0.4,
-        data: [50, 25, 12, 48, 56, 76, 42]
-      },
-      {
-        type: 'bar',
-        label: 'Dataset 2',
-        backgroundColor: documentStyle.getPropertyValue('--green-500'),
-        data: [21, 84, 24, 75, 37, 65, 34],
-        borderColor: 'white',
-        borderWidth: 2
-      },
-      {
-        type: 'bar',
-        label: 'Dataset 3',
-        backgroundColor: documentStyle.getPropertyValue('--orange-500'),
-        data: [41, 52, 24, 74, 23, 21, 32]
-      }
-    ]
+    labels: chartData.labels,
+    datasets: Object.entries(chartData.data).map(([key, data]) => ({
+      label: key,
+      fill: false,
+      borderColor: data['color'],
+      tension: 0.4,
+      data: data['values'],
+    })),
   };
 };
+
 const setChartOptions = () => {
-  const documentStyle = getComputedStyle(document.documentElement);
-  // const textColor = documentStyle.getPropertyValue('--text-color');
-  const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-  const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+  const textColor = "black";
+  const textColorSecondary = "slategray";
+  const surfaceBorder = "lightgray";
 
   return {
     maintainAspectRatio: false,
     aspectRatio: 0.6,
     plugins: {
       legend: {
-        display: false
+        labels: {
+          color: textColor
+        }
       }
     },
     scales: {
       x: {
-        ticks: {
-          display: false
-        },
-        grid: {
-          color: surfaceBorder
-        }
+        display: false
       },
       y: {
         ticks: {

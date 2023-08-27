@@ -55,6 +55,13 @@ function getMinAndMaxValuesForTimeSeries(selectedTimeSeriesData) {
     return minAndMaxValuesForTimeSeries;
 }
 
+function getSelectedTimeSeriesDataDates(data) {
+    const uniqueTimestamps = new Set(
+        data.map(item => item.date.getTime())
+    );
+    return Array.from(uniqueTimestamps).map(timestamp => new Date(timestamp));
+}
+
 export const useTimeSeriesStore = defineStore('timeseries', {
     state: () => ({
         timeSeries: [timeseriesDataPrecipitation, timeseriesDataTemperature],
@@ -73,7 +80,8 @@ export const useTimeSeriesStore = defineStore('timeseries', {
         animationInterval: 2000,
         animationStart: null,
         animationEnd: null,
-        animationNow: "Select animation start and end dates to run an animation"
+        animationNow: "Select animation start and end dates to run an animation",
+        chartData: null
     }),
     actions: {
         initialize() {
@@ -87,13 +95,44 @@ export const useTimeSeriesStore = defineStore('timeseries', {
         updateTimeSeriesData(newSelectedTimeSeriesData) {
             const mergedAndSortedData = prepareData(newSelectedTimeSeriesData);
             this.minAndMaxValuesMap = getMinAndMaxValuesForTimeSeries(newSelectedTimeSeriesData);
-            this.selectedTimeSeriesDataDates = [...new Set(mergedAndSortedData.map(item => item.date))];
+            this.selectedTimeSeriesDataDates = getSelectedTimeSeriesDataDates(mergedAndSortedData);
             this.minTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];
             this.selectedMinTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];
             this.maxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
             this.selectedMaxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
-            this.selectedTimeSeriesDataMergedAndGrouped = Object.entries(groupByDateStationIdAndTimeSeriesId(mergedAndSortedData));
+            this.chartData = groupByDateStationIdAndTimeSeriesId(mergedAndSortedData);
+            this.selectedTimeSeriesDataMergedAndGrouped = Object.entries(this.chartData);
             this.selectedTimeSeriesIds = [...new Set(mergedAndSortedData.map(item => item.timeSeriesId))];
+        },
+        getChartDataForStation(stationId) {
+            const selectedDates = this.selectedTimeSeriesDataDates
+                .map(item => item)
+                .filter(date => date >= this.selectedMinTimeSeriesDataDate && date <= this.selectedMaxTimeSeriesDataDate);
+
+            const results = {};
+            for (let i = 0; i < selectedDates.length; i++) {
+                const date = selectedDates[i];
+                let stationDataInSelectedDay = this.chartData[date][stationId];
+
+                if (stationDataInSelectedDay === undefined) continue;
+
+                const valuesHeader = "values";
+                const colorHeader = "color";
+                for (const [timeSeriesId, value] of Object.entries(stationDataInSelectedDay)) {
+                    let timeSeries = this.timeSeriesInfoMap.get(parseInt(timeSeriesId));
+
+                    if (!results[timeSeries.name]) results[timeSeries.name] = {};
+                    if (!results[timeSeries.name][valuesHeader]) results[timeSeries.name][valuesHeader] = new Array(selectedDates.length).fill(0);
+                    if (!results[timeSeries.name][colorHeader]) results[timeSeries.name][colorHeader] = timeSeries.midColor;
+
+                    results[timeSeries.name][valuesHeader][i] = value;
+                }
+
+            }
+            return {
+                labels: selectedDates.map(date => date.toLocaleString()),
+                data: results
+            };
         }
     }
 });
