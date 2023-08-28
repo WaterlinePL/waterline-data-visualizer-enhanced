@@ -3,7 +3,7 @@
   </div>
   <div class="content__map-scales">
     <div class="content__map-scale" v-for="timeSeriesId in timeSeriesStore.selectedTimeSeriesIds" :key="timeSeriesId">
-      <p class="map-scale__title">{{ getValueLabelForScale(timeSeriesId) }}</p>
+      <p class="map-scale__title">{{ getValueLabelForScale(timeSeriesId) + ' (' + getTimeSeriesNameForScale(timeSeriesId)  +')' }}</p>
       <div class="map-scale__values">
         <div class="map-scale__scale-value">
           <p class="scale-value__value scale-value__value--low">{{ getMinValueForScale(timeSeriesId) }}</p>
@@ -106,7 +106,7 @@ function addMarker(station, values) {
       addLineMarker(station, values);
       break;
     case 'POLYGON':
-      console.log('Polygon support not implemented');
+      addPolygonMarker(station, values);
       break;
   }
 }
@@ -144,6 +144,27 @@ function addLineMarker(station, values) {
     };
   }
   const marker = L.polyline(station.coordinates, options).addTo(map.value);
+  marker.on('click', event => {
+    const coords = event.latlng;
+    detailsStore.clickOnLeafletMap(station, coords, values)
+  });
+  if (station.id === detailsStore.selectedStationId) {
+    detailsStore.updateSelectedStation(values);
+  }
+}
+
+function addPolygonMarker(station, values) {
+  let options = {};
+  for (const [timeSeriesId, val] of Object.entries(values)) {
+    const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(parseInt(timeSeriesId));
+    const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(parseInt(timeSeriesId));
+    options = {
+      color: mapValueToThreeColorGradient(val, jsonObject.minValue, jsonObject.maxValue, timeSeriesInfo.minColor, timeSeriesInfo.midColor, timeSeriesInfo.maxColor),
+      className: `marker__content-part-${timeSeriesId}`,
+      fillOpacity: 0.5
+    };
+  }
+  const marker = L.polygon(station.coordinates, options).addTo(map.value);
   marker.on('click', event => {
     const coords = event.latlng;
     detailsStore.clickOnLeafletMap(station, coords, values)
@@ -200,6 +221,11 @@ function getValueLabelForScale(timeSeriesId) {
   return timeSeriesInfo.valueLabel;
 }
 
+function getTimeSeriesNameForScale(timeSeriesId) {
+  const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
+  return timeSeriesInfo.name;
+}
+
 function getLinearGradientBackground(timeSeriesId) {
   const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
   return `background: linear-gradient(to right, ${timeSeriesInfo.minColor}, ${timeSeriesInfo.midColor}, ${timeSeriesInfo.maxColor})`;
@@ -249,7 +275,7 @@ function getLinearGradientBackground(timeSeriesId) {
 
 .content__map-scales {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 

@@ -51,6 +51,8 @@ let currentAnimationIndex = null;
 let endAnimationIndex = null;
 
 watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate, selectedMinTimeSeriesDataDate => {
+  if (!selectedMinTimeSeriesDataDate) return;
+
   timeSeriesStore.animationStart = selectedMinTimeSeriesDataDate.toLocaleString();
   timeSeriesStore.animationNow = selectedMinTimeSeriesDataDate.toLocaleString();
   startAnimationIndex = findAnimationIndex(selectedMinTimeSeriesDataDate);
@@ -61,6 +63,8 @@ watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate, selectedMinTimeSeries
 });
 
 watch(() => timeSeriesStore.selectedMaxTimeSeriesDataDate, selectedMaxTimeSeriesDataDate => {
+  if (!selectedMaxTimeSeriesDataDate) return;
+
   timeSeriesStore.animationEnd = selectedMaxTimeSeriesDataDate.toLocaleString();
   endAnimationIndex = findAnimationIndex(selectedMaxTimeSeriesDataDate);
 });

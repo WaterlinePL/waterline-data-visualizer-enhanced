@@ -2,6 +2,10 @@ import { defineStore } from 'pinia';
 import pointTimeSeriesData1 from '../data/point/timeseries_precipitation.json'
 import pointTimeSeriesData2 from '../data/point/timeseries_temperature.json'
 import lineTimeSeriesData from '../data/line/timeseries.json'
+import polygonTimeSeriesData1 from '../data/polygon/timeseries_random_value_1.json'
+import polygonTimeSeriesData2 from '../data/polygon/timeseries_random_value_2.json'
+import polygonTimeSeriesData3 from '../data/polygon/timeseries_random_value_3.json'
+import polygonTimeSeriesData4 from '../data/polygon/timeseries_random_value_4.json'
 
 function prepareData(data) {
     return data
@@ -65,7 +69,7 @@ function getSelectedTimeSeriesDataDates(data) {
 
 export const useTimeSeriesStore = defineStore('timeseries', {
     state: () => ({
-        timeSeries: [pointTimeSeriesData1, pointTimeSeriesData2, lineTimeSeriesData],
+        timeSeries: [pointTimeSeriesData1, pointTimeSeriesData2, lineTimeSeriesData, polygonTimeSeriesData1, polygonTimeSeriesData2, polygonTimeSeriesData3, polygonTimeSeriesData4],
         timeSeriesInfoMap: new Map(),
         minAndMaxValuesMap: new Map(),
         selectedTimeSeriesData: [],
