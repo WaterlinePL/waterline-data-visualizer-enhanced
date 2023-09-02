@@ -23,7 +23,7 @@
         <Button label="Yes" icon="pi pi-check" @click="stationsDialogVisible = false" autofocus />
       </template>
     </Dialog>
-    <Dialog v-model:visible="customizeUIDialogVisible" header="Customize UI" :style="{ width: '50vw' }">
+    <Dialog v-model:visible="customizeUIDialogVisible" header="Getting Started - Setup User Interface" :style="{ width: '50vw' }">
       <div class="customize-ui__dialog">
         <TabView>
           <TabPanel header="General">
@@ -149,7 +149,7 @@ watch(() => timeSeriesStore.selectedTimeSeriesData, selectedTimeSeriesData => {
 })
 
 const stationsDialogVisible = ref(false);
-const customizeUIDialogVisible = ref(false);
+const customizeUIDialogVisible = ref(true);
 
 const items = ref([
   {
@@ -157,13 +157,6 @@ const items = ref([
     icon: 'pi pi-fw pi-map-marker',
     command: () => {
       stationsDialogVisible.value = true;
-    }
-  },
-  {
-    label: 'Customize UI',
-    icon: 'pi pi-fw pi-palette',
-    command: () => {
-      customizeUIDialogVisible.value = true;
     }
   }
 ]);
