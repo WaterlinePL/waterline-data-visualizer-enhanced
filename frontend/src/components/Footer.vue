@@ -17,9 +17,9 @@ watch(() => customizeStore.footerDescriptionColor, newColor => {
   footerDescriptionColor.value = '#' + newColor;
 })
 
-const footerBackgroundColor = ref(customizeStore.footerBackgroundColor);
-watch(() => customizeStore.footerBackgroundColor, newColor => {
-  footerBackgroundColor.value = '#' + newColor;
+const generalComponentsBackgroundColor = ref(customizeStore.generalComponentsBackgroundColor);
+watch(() => customizeStore.generalComponentsBackgroundColor, newColor => {
+  generalComponentsBackgroundColor.value = '#' + newColor;
 })
 
 const generalBorderColor = ref(customizeStore.generalBorderColor);
@@ -39,7 +39,7 @@ watch(() => customizeStore.generalBorderWidth, newWidth => {
 <style>
 .footer {
   margin: 1rem;
-  background-color: v-bind(footerBackgroundColor);
+  background-color: v-bind(generalComponentsBackgroundColor);
 }
 
 .footer-text {

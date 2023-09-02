@@ -41,6 +41,11 @@ watch(() => customizeStore.generalBorderWidth, newWidth => {
   generalBorderWidth.value = newWidth;
   computedGeneralBorderWidth.value = newWidth + 'px';
 })
+
+const generalComponentsBackgroundColor = ref(customizeStore.generalComponentsBackgroundColor);
+watch(() => customizeStore.generalComponentsBackgroundColor, newColor => {
+  generalComponentsBackgroundColor.value = '#' + newColor;
+})
 </script>
 
 <style>

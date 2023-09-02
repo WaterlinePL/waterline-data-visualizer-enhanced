@@ -36,6 +36,12 @@
               </div>
               <div class="section__part">
                 <div class="part__colorpicker">
+                  <p class="colorpicker__title">Components Background Color</p>
+                  <ColorPicker v-model="customizeStore.generalComponentsBackgroundColor" />
+                </div>
+              </div>
+              <div class="section__part">
+                <div class="part__colorpicker">
                   <p class="colorpicker__title">Border Color</p>
                   <ColorPicker v-model="customizeStore.generalBorderColor" />
                 </div>
@@ -74,12 +80,6 @@
                 <p class="part__title">Logo</p>
                 <input type="file" id="logoInput" ref="logoInput" :multiple="false" accept="image/*" @change="handleFileUpload">
               </div>
-              <div class="section__part">
-                <div class="part__colorpicker">
-                  <p class="colorpicker__title">Header Background Color</p>
-                  <ColorPicker v-model="customizeStore.headerBackgroundColor" />
-                </div>
-              </div>
             </div>
           </TabPanel>
           <TabPanel header="Footer">
@@ -92,12 +92,6 @@
                 <div class="part__colorpicker">
                   <p class="colorpicker__title">Footer Description Color</p>
                   <ColorPicker v-model="customizeStore.footerDescriptionColor" />
-                </div>
-              </div>
-              <div class="section__part">
-                <div class="part__colorpicker">
-                  <p class="colorpicker__title">Footer Background Color</p>
-                  <ColorPicker v-model="customizeStore.footerBackgroundColor" />
                 </div>
               </div>
             </div>
@@ -126,9 +120,9 @@ watch(() => customizeStore.headerDescriptionColor, newColor => {
   headerDescriptionColor.value = '#' + newColor;
 })
 
-const headerBackgroundColor = ref(customizeStore.headerBackgroundColor);
-watch(() => customizeStore.headerBackgroundColor, newColor => {
-  headerBackgroundColor.value = '#' + newColor;
+const generalComponentsBackgroundColor = ref(customizeStore.generalComponentsBackgroundColor);
+watch(() => customizeStore.generalComponentsBackgroundColor, newColor => {
+  generalComponentsBackgroundColor.value = '#' + newColor;
 })
 
 const generalBorderColor = ref(customizeStore.generalBorderColor);
@@ -217,7 +211,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: v-bind(headerBackgroundColor);
+  background-color: v-bind(generalComponentsBackgroundColor);
   border-width: v-bind(computedGeneralBorderWidth);
   border-style: solid;
   border-color: v-bind(generalBorderColor);
@@ -257,6 +251,11 @@ onMounted(() => {
   text-align: left;
   margin-bottom: 0.25rem;
   color: v-bind(headerTitleColor);
+}
+
+.header .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-icon,
+.header .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
+  color: v-bind(headerTitleColor) !important;
 }
 
 .header__description {
