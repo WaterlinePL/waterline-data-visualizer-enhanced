@@ -40,6 +40,21 @@ timeSeriesStore.initialize();
 
 const detailsStore = useDetailsStore();
 
+const minAndMaxValuesMap = ref(timeSeriesStore.minAndMaxValuesMap);
+watch(() => timeSeriesStore.minAndMaxValuesMap, newValues => {
+  minAndMaxValuesMap.value = newValues;
+});
+
+watch(() => timeSeriesStore.selectedMinTimeSeriesDataDate, selectedMinTimeSeriesDataDate => {
+  if (!selectedMinTimeSeriesDataDate) return;
+  timeSeriesStore.updateMinAndMaxValuesMap();
+});
+
+watch(() => timeSeriesStore.selectedMaxTimeSeriesDataDate, selectedMaxTimeSeriesDataDate => {
+  if (!selectedMaxTimeSeriesDataDate) return;
+  timeSeriesStore.updateMinAndMaxValuesMap();
+});
+
 const mapLeaflet = ref(null);
 
 const props = defineProps({
@@ -202,12 +217,12 @@ function mapValueToThreeColorGradient(value, minValue, maxValue, color1, color2,
 }
 
 function getMinValueForScale(timeSeriesId) {
-  const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(timeSeriesId);
+  const jsonObject = minAndMaxValuesMap.value.get(timeSeriesId);
   return jsonObject.minValue.toFixed(2);
 }
 
 function getMaxValueForScale(timeSeriesId) {
-  const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(timeSeriesId);
+  const jsonObject = minAndMaxValuesMap.value.get(timeSeriesId);
   return jsonObject.maxValue.toFixed(2);
 }
 

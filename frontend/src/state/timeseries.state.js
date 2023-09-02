@@ -46,12 +46,17 @@ function groupByDateStationIdAndTimeSeriesId(mergedAndSortedData) {
         }, {});
 }
 
-function getMinAndMaxValuesForTimeSeries(selectedTimeSeriesData) {
+function getMinAndMaxValuesForTimeSeries(selectedTimeSeriesData, selectedMinDate, selectedMaxDate) {
     const minAndMaxValuesForTimeSeries = new Map();
-    selectedTimeSeriesData.forEach(jsonObject => {
+    selectedTimeSeriesData
+        .forEach(jsonObject => {
         const timeSeriesId = jsonObject[0].timeSeriesId;
-        const min = jsonObject.reduce((min, obj) => (obj.value < min ? obj.value : min), Infinity);
-        const max = jsonObject.reduce((max, obj) => (obj.value > max ? obj.value : max), -Infinity);
+        const min = jsonObject.filter(obj => new Date(obj.date) >= selectedMinDate)
+            .reduce((min, obj) => (obj.value < min ? obj.value : min), Infinity);
+
+        const max = jsonObject.filter(obj => new Date(obj.date) <= selectedMaxDate)
+            .reduce((max, obj) => (obj.value > max ? obj.value : max), -Infinity);
+
         minAndMaxValuesForTimeSeries.set(timeSeriesId, {
             id: timeSeriesId,
             minValue: min,
@@ -100,12 +105,12 @@ export const useTimeSeriesStore = defineStore('timeseries', {
         },
         updateTimeSeriesData(newSelectedTimeSeriesData) {
             const mergedAndSortedData = prepareData(newSelectedTimeSeriesData);
-            this.minAndMaxValuesMap = getMinAndMaxValuesForTimeSeries(newSelectedTimeSeriesData);
             this.selectedTimeSeriesDataDates = getSelectedTimeSeriesDataDates(mergedAndSortedData);
             this.minTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];
             this.selectedMinTimeSeriesDataDate = this.selectedTimeSeriesDataDates[0];
             this.maxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
             this.selectedMaxTimeSeriesDataDate = this.selectedTimeSeriesDataDates[this.selectedTimeSeriesDataDates.length - 1];
+            this.minAndMaxValuesMap = getMinAndMaxValuesForTimeSeries(newSelectedTimeSeriesData, this.selectedMinTimeSeriesDataDate, this.selectedMaxTimeSeriesDataDate);
             this.chartData = groupByDateStationIdAndTimeSeriesId(mergedAndSortedData);
             this.selectedTimeSeriesDataMergedAndGrouped = Object.entries(this.chartData);
             this.selectedTimeSeriesIds = [...new Set(mergedAndSortedData.map(item => item.timeSeriesId))];
@@ -139,6 +144,9 @@ export const useTimeSeriesStore = defineStore('timeseries', {
                 labels: selectedDates.map(date => date.toLocaleString()),
                 data: results
             };
+        },
+        updateMinAndMaxValuesMap() {
+            getMinAndMaxValuesForTimeSeries(this.selectedTimeSeriesData, this.selectedMinTimeSeriesDataDate, this.selectedMaxTimeSeriesDataDate);
         }
     }
 });

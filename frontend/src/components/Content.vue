@@ -131,6 +131,10 @@ const stopAnimation = () => {
   margin: 1rem;
 }
 
+.content__map-scales {
+  margin: 1rem;
+}
+
 .controllers__progress-bar .p-progressbar {
   height: 15px;
 }
