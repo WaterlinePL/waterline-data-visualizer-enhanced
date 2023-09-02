@@ -10,7 +10,7 @@
           </div>
         </div>
         <MultiSelect class="header__multiselect" v-model="timeSeriesStore.selectedTimeSeriesData" :options="timeSeriesStore.timeSeries" filter :maxSelectedLabels="1"
-                     optionLabel="name" optionValue="data" placeholder="Select Time Series" />
+                     :optionLabel="optionName" optionValue="data" placeholder="Select Time Series" />
       </template>
     </Menubar>
     <Dialog v-model:visible="stationsDialogVisible" modal header="Stations" :style="{ width: '50vw' }">
@@ -141,6 +141,10 @@ const timeSeriesStore = useTimeSeriesStore();
 watch(() => timeSeriesStore.selectedTimeSeriesData, selectedTimeSeriesData => {
   timeSeriesStore.updateTimeSeriesData(selectedTimeSeriesData);
 })
+
+const optionName = (option) => {
+  return option.name + " (" + option.type + ")";
+};
 
 const stationsDialogVisible = ref(false);
 const customizeUIDialogVisible = ref(true);

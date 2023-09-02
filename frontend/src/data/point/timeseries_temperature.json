@@ -7,6 +7,7 @@
   "maxColor": "#00BFFF",
   "midColor": "#87CEEB",
   "minColor": "#E0FFFF",
+  "type": "POINT",
   "data": [
     {
       "id": 0,

@@ -1,6 +1,6 @@
 [
   {
-    "id": 0,
+    "id": 100,
     "name": "Polygon station #0",
     "type": "POLYGON",
     "coordinates": [
@@ -43,7 +43,7 @@
     ]
   },
   {
-    "id": 1,
+    "id": 101,
     "name": "Polygon station #1",
     "type": "POLYGON",
     "coordinates": [
@@ -74,7 +74,7 @@
     ]
   },
   {
-    "id": 2,
+    "id": 102,
     "name": "Polygon station #2",
     "type": "POLYGON",
     "coordinates": [
@@ -105,7 +105,7 @@
     ]
   },
   {
-    "id": 3,
+    "id": 103,
     "name": "Polygon station #3",
     "type": "POLYGON",
     "coordinates": [

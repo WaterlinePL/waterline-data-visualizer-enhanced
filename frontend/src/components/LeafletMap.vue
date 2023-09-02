@@ -91,7 +91,7 @@ function addMarkers() {
 
 function clearMarkers() {
   map.value.eachLayer((layer) => {
-    if (layer instanceof L.Marker) {
+    if (layer instanceof L.Marker || layer instanceof L.Polyline || layer instanceof L.Polygon) {
       map.value.removeLayer(layer);
     }
   });

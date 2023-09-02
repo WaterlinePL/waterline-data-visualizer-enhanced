@@ -29,7 +29,8 @@ function prepareTimeSeriesInfo(jsonObject) {
         metricLabel: jsonObject.metricLabel,
         maxColor: jsonObject.maxColor,
         midColor: jsonObject.midColor,
-        minColor: jsonObject.minColor
+        minColor: jsonObject.minColor,
+        type: jsonObject.type
     };
 }
 

@@ -7,6 +7,7 @@
   "maxColor": "#FF0000",
   "midColor": "#FFFF00",
   "minColor": "#00FF00",
+  "type": "LINE",
   "data": [
     {
       "id": 0,

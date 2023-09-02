@@ -108,7 +108,9 @@ watch(() => timeSeriesStore.selectedTimeSeriesIds, (newIDs) => {
 });
 
 watch(() => visibleTimeSeriesIds.value, (newIDs, oldIDs) => {
-  if (newIDs.length === 0) {
+  const pointsTimeSeries = newIDs.map(id => timeSeriesStore.timeSeriesInfoMap.get(id))
+      .reduce((n, timeSeriesInfo) => timeSeriesInfo.type === "POINT" ? n + 1: n, 0);
+  if (pointsTimeSeries === 0) {
     document.querySelectorAll('.map__marker').forEach(element => element.style.display = 'none');
   } else {
     document.querySelectorAll('.map__marker').forEach(element => element.style.display = 'flex');
@@ -228,7 +230,7 @@ const setChartOptionsMaximized = () => {
 
 function getTimeSeriesName(timeSeriesId) {
   const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
-  return timeSeriesInfo.name;
+  return timeSeriesInfo.name + " (" + timeSeriesInfo.type + ")";
 }
 </script>
 
