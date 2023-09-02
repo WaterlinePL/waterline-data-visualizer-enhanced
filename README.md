@@ -1,6 +1,6 @@
 # Waterline Data Visualizer
 
-![Waterline Data Visualizer](./docs/screenshot.png)
+![Waterline Data Visualizer](./docs/waterline-data-visualizer.png)
 
 Waterline Data Visualizer is a web application for visualizing and analyzing hydrological data. It provides an interactive interface to explore and interpret measurements efficiently.
 
