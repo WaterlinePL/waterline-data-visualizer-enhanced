@@ -128,7 +128,7 @@ const stopAnimation = () => {
 .content__controllers {
   display: flex;
   flex-direction: column;
-  margin: 1rem 0;
+  margin: 1rem;
 }
 
 .controllers__progress-bar .p-progressbar {

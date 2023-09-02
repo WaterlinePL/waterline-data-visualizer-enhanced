@@ -82,11 +82,24 @@
 import {ref, watch} from 'vue';
 import { useTimeSeriesStore } from '@/state/timeseries.state';
 import { useDetailsStore } from '@/state/details.state';
+import {useCustomizeStore} from "@/state/customize.state";
 
 const timeSeriesStore = useTimeSeriesStore();
 timeSeriesStore.initialize();
 
 const detailsStore = useDetailsStore();
+
+const customizeStore = useCustomizeStore();
+
+const sidebarBorderColor = ref(customizeStore.sidebarBorderColor);
+watch(() => customizeStore.sidebarBorderColor, newColor => {
+  sidebarBorderColor.value = '#' + newColor;
+})
+
+const sidebarBackgroundColor = ref(customizeStore.sidebarBackgroundColor);
+watch(() => customizeStore.sidebarBackgroundColor, newColor => {
+  sidebarBackgroundColor.value = '#' + newColor;
+})
 
 const visibleTimeSeriesIds = ref([...timeSeriesStore.selectedTimeSeriesIds]);
 
@@ -222,7 +235,6 @@ function getTimeSeriesName(timeSeriesId) {
 <style>
 .panel {
   padding: 1rem;
-  border: 1px solid #e5e5e5;
   min-height: 800px;
 }
 
