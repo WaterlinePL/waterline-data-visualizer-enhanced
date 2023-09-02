@@ -88,7 +88,7 @@ export const useTimeSeriesStore = defineStore('timeseries', {
         selectedMaxTimeSeriesDataDate: null,
         isAnimating: false,
         clearLeafletMap: false,
-        animationInterval: 2000,
+        animationInterval: 1000,
         animationStart: null,
         animationEnd: null,
         animationNow: "Select animation start and end dates to run an animation",

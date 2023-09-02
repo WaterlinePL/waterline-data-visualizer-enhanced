@@ -149,15 +149,7 @@ const optionName = (option) => {
 const stationsDialogVisible = ref(false);
 const customizeUIDialogVisible = ref(true);
 
-const items = ref([
-  {
-    label: 'Stations',
-    icon: 'pi pi-fw pi-map-marker',
-    command: () => {
-      stationsDialogVisible.value = true;
-    }
-  }
-]);
+const items = ref([]);
 
 const logoCanvas = ref(null);
 const selectedFile = ref(null);
