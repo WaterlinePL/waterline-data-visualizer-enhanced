@@ -3,7 +3,7 @@
     <Menubar :model="items">
       <template #start>
         <div class="header__logo">
-          <img alt="logo" :src="headerLogoUrl" height="60" />
+          <canvas id="logoCanvas" ref="logoCanvas" class="logo__content" />
           <div class="header__text">
             <p class="header__title">{{ customizeStore.headerTitle }}</p>
             <p class="header__description">{{ customizeStore.headerDescription }}</p>
@@ -72,7 +72,7 @@
               </div>
               <div class="section__part">
                 <p class="part__title">Logo</p>
-                <FileUpload mode="basic" :customUpload="true" @upload="handleLogoUpload" accept="image/*" :maxFileSize="5000000" />
+                <input type="file" id="logoInput" ref="logoInput" :multiple="false" accept="image/*" @change="handleFileUpload">
               </div>
               <div class="section__part">
                 <div class="part__colorpicker">
@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import {ref, watch} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 
 import {useTimeSeriesStore} from '@/state/timeseries.state';
 import {useCustomizeStore} from "@/state/customize.state";
@@ -168,20 +168,50 @@ const items = ref([
   }
 ]);
 
-const headerLogoUrl = ref(require('@/assets/logo.png'));
+const logoCanvas = ref(null);
+const selectedFile = ref(null);
 
-const uploadedImage = ref(null);
-const handleLogoUpload = (event) => {
-  // Assuming the first file is the uploaded image
-  const file = event.files[0];
-
-  // Create a URL for the uploaded image
-  uploadedImage.value = URL.createObjectURL(file);
-
-  // Log the uploaded file for testing purposes
-  console.log(file);
-  console.log(uploadedImage.value)
+const handleFileUpload = (event) => {
+  if (event.target.files.length > 0) {
+    selectedFile.value = event.target.files[0];
+    drawImageOnCanvas();
+  }
 };
+
+const drawImageOnCanvas = () => {
+  const canvas = logoCanvas.value;
+  const context = canvas.getContext('2d');
+  const img = new Image();
+
+  img.onload = () => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(img, 0, 0, canvas.width, canvas.height);
+  };
+
+  img.src = URL.createObjectURL(selectedFile.value);
+};
+
+const drawDefaultImageOnCanvas = (file) => {
+  const canvas = logoCanvas.value;
+  const context = canvas.getContext('2d');
+  const img = new Image();
+
+  img.onload = () => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(img, 0, 0, canvas.width, canvas.height);
+  };
+
+  fetch(file)
+      .then(response => response.blob())
+      .then(blob => {
+        img.src = URL.createObjectURL(blob);
+      });
+};
+
+onMounted(() => {
+  const defaultImageFile = require('@/assets/logo.png');
+  drawDefaultImageOnCanvas(defaultImageFile);
+});
 
 </script>
 
@@ -209,6 +239,11 @@ const handleLogoUpload = (event) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.header__logo .logo__content {
+  width: 60px;
+  height: 60px;
 }
 
 .header__multiselect {
