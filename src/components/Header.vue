@@ -228,6 +228,32 @@ const handleStationFilesUpload = (event) => {
   }
 };
 
+const handleTimeSeriesFilesUpload = (event) => {
+  const files = event.target.files;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    if (file.type !== 'application/json') {
+      console.log(`Skipping file: ${file.name} with type: ${file.type}`)
+      continue;
+    }
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      try {
+        const jsonData = JSON.parse(e.target.result);
+        timeSeriesStore.uploadTimeSeriesFile(jsonData);
+
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+      }
+    };
+
+    reader.readAsText(file);
+  }
+};
+
 </script>
 
 <style>

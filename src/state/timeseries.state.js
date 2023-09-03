@@ -147,6 +147,11 @@ export const useTimeSeriesStore = defineStore('timeseries', {
         },
         updateMinAndMaxValuesMap() {
             getMinAndMaxValuesForTimeSeries(this.selectedTimeSeriesData, this.selectedMinTimeSeriesDataDate, this.selectedMaxTimeSeriesDataDate);
+        },
+        uploadTimeSeriesFile(timeSeries) {
+            this.timeSeries.push(timeSeries);
+            let timeSeriesInfo = prepareTimeSeriesInfo(timeSeries);
+            this.timeSeriesInfoMap.set(timeSeriesInfo.id, timeSeriesInfo);
         }
     }
 });
