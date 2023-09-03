@@ -13,19 +13,21 @@
                      :optionLabel="optionName" optionValue="data" placeholder="Select Time Series" />
       </template>
     </Menubar>
-    <Dialog v-model:visible="stationsDialogVisible" modal header="Stations" :style="{ width: '50vw' }">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-      <template #footer>
-        <Button label="No" icon="pi pi-times" @click="stationsDialogVisible = false" text />
-        <Button label="Yes" icon="pi pi-check" @click="stationsDialogVisible = false" autofocus />
-      </template>
-    </Dialog>
     <Dialog v-model:visible="customizeUIDialogVisible" header="Getting Started - Setup User Interface" :style="{ width: '50vw' }">
       <div class="customize-ui__dialog">
         <TabView>
+          <TabPanel header="Data">
+            <div class="dialog__tab-panel">
+              <div class="section__part">
+                <p class="part__title">Stations</p>
+                <input type="file" id="logoInput" ref="logoInput" :multiple="true" accept="application/json" @change="handleStationFilesUpload">
+              </div>
+              <div class="section__part">
+                <p class="part__title">Time Series</p>
+                <input type="file" id="logoInput" ref="logoInput" :multiple="true" accept="application/json" @change="handleTimeSeriesFilesUpload">
+              </div>
+            </div>
+          </TabPanel>
           <TabPanel header="General">
             <div class="dialog__tab-panel">
               <div class="section__part">
@@ -57,6 +59,10 @@
           <TabPanel header="Header">
             <div class="dialog__tab-panel">
               <div class="section__part">
+                <p class="part__title">Logo</p>
+                <input type="file" id="logoInput" ref="logoInput" :multiple="true" accept="image/*" @change="handleLogoFileUpload">
+              </div>
+              <div class="section__part">
                 <label class="part__label" for="username">Header Title</label>
                 <InputText id="username" v-model="customizeStore.headerTitle" />
               </div>
@@ -75,10 +81,6 @@
                   <p class="colorpicker__title">Header Description Color</p>
                   <ColorPicker v-model="customizeStore.headerDescriptionColor" />
                 </div>
-              </div>
-              <div class="section__part">
-                <p class="part__title">Logo</p>
-                <input type="file" id="logoInput" ref="logoInput" :multiple="false" accept="image/*" @change="handleFileUpload">
               </div>
             </div>
           </TabPanel>
@@ -107,6 +109,11 @@ import {onMounted, ref, watch} from 'vue';
 
 import {useTimeSeriesStore} from '@/state/timeseries.state';
 import {useCustomizeStore} from "@/state/customize.state";
+import {useStationsStore} from "@/state/stations.state";
+
+
+const stationsStore = useStationsStore();
+stationsStore.initialize();
 
 const customizeStore = useCustomizeStore();
 
@@ -146,7 +153,6 @@ const optionName = (option) => {
   return option.name + " (" + option.type + ")";
 };
 
-const stationsDialogVisible = ref(false);
 const customizeUIDialogVisible = ref(true);
 
 const items = ref([]);
@@ -154,7 +160,7 @@ const items = ref([]);
 const logoCanvas = ref(null);
 const selectedFile = ref(null);
 
-const handleFileUpload = (event) => {
+const handleLogoFileUpload = (event) => {
   if (event.target.files.length > 0) {
     selectedFile.value = event.target.files[0];
     drawImageOnCanvas();
@@ -195,6 +201,32 @@ onMounted(() => {
   const defaultImageFile = require('@/assets/logo.png');
   drawDefaultImageOnCanvas(defaultImageFile);
 });
+
+const handleStationFilesUpload = (event) => {
+  const files = event.target.files;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    if (file.type !== 'application/json') {
+      console.log(`Skipping file: ${file.name} with type: ${file.type}`)
+      continue;
+    }
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      try {
+        const jsonData = JSON.parse(e.target.result);
+        stationsStore.uploadStationsFile(jsonData);
+
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+      }
+    };
+
+    reader.readAsText(file);
+  }
+};
 
 </script>
 

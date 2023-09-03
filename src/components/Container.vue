@@ -78,7 +78,7 @@ watch(() => customizeStore.generalComponentsBackgroundColor, newColor => {
     margin-left: 1rem;
     flex-grow: 3;
     flex-direction: column;
-    background-color: v-bind(generalComponentsBackgroundColor);
+    background-color: #FFFFFF;
     border-width: v-bind(computedGeneralBorderWidth);
     border-style: solid;
     border-color: v-bind(generalBorderColor);
