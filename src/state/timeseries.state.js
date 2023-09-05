@@ -1,11 +1,15 @@
 import { defineStore } from 'pinia';
-import pointTimeSeriesData1 from '../data/timeseries/timeseries_point_1.json'
-import pointTimeSeriesData2 from '../data/timeseries/timeseries_point_2.json'
-import lineTimeSeriesData from '../data/timeseries/timeseries_line.json'
-import polygonTimeSeriesData1 from '../data/timeseries/timeseries_polygon_1.json'
-import polygonTimeSeriesData2 from '../data/timeseries/timeseries_polygon_2.json'
-import polygonTimeSeriesData3 from '../data/timeseries/timeseries_polygon_3.json'
-import polygonTimeSeriesData4 from '../data/timeseries/timeseries_polygon_4.json'
+
+function importTimeSeries() {
+    const data = [];
+    const dataContext = require.context('../data/timeseries', true, /\.json$/);
+    dataContext.keys().forEach((key) => {
+        const formattedKey = key.replace('./', '');
+        const module = import((`../data/timeseries/${formattedKey}`));
+        data.push(module);
+    });
+    return Promise.all(data);
+}
 
 function prepareData(data) {
     return data
@@ -75,7 +79,7 @@ function getSelectedTimeSeriesDataDates(data) {
 
 export const useTimeSeriesStore = defineStore('timeseries', {
     state: () => ({
-        timeSeries: [pointTimeSeriesData1, pointTimeSeriesData2, lineTimeSeriesData, polygonTimeSeriesData1, polygonTimeSeriesData2, polygonTimeSeriesData3, polygonTimeSeriesData4],
+        timeSeries: [],
         timeSeriesInfoMap: new Map(),
         minAndMaxValuesMap: new Map(),
         selectedTimeSeriesData: [],
@@ -95,12 +99,20 @@ export const useTimeSeriesStore = defineStore('timeseries', {
         chartData: null
     }),
     actions: {
-        initialize() {
+        async initialize() {
             if (this.timeSeriesInfoMap.size === 0) {
-                this.timeSeries.forEach(jsonObject => {
-                    let timeSeriesInfo = prepareTimeSeriesInfo(jsonObject);
-                    this.timeSeriesInfoMap.set(timeSeriesInfo.id, timeSeriesInfo);
-                });
+                try {
+                    const timeSeriesModules = await importTimeSeries();
+                    timeSeriesModules.forEach((module) => {
+                        const timeSeriesData = module.default;
+                        this.timeSeries.push(timeSeriesData);
+                        let timeSeriesInfo = prepareTimeSeriesInfo(timeSeriesData);
+                        this.timeSeriesInfoMap.set(timeSeriesInfo.id, timeSeriesInfo);
+                    })
+
+                } catch (error) {
+                    console.error('Error loading data files:', error);
+                }
             }
         },
         updateTimeSeriesData(newSelectedTimeSeriesData) {

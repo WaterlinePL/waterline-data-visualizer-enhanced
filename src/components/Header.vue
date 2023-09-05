@@ -113,8 +113,6 @@ import {useStationsStore} from "@/state/stations.state";
 
 
 const stationsStore = useStationsStore();
-stationsStore.initialize();
-
 const customizeStore = useCustomizeStore();
 
 const headerTitleColor = ref(customizeStore.headerTitleColor);

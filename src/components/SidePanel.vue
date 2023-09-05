@@ -85,10 +85,7 @@ import { useDetailsStore } from '@/state/details.state';
 import {useCustomizeStore} from "@/state/customize.state";
 
 const timeSeriesStore = useTimeSeriesStore();
-timeSeriesStore.initialize();
-
 const detailsStore = useDetailsStore();
-
 const customizeStore = useCustomizeStore();
 
 const sidebarBorderColor = ref(customizeStore.sidebarBorderColor);
