@@ -273,6 +273,7 @@ function getLinearGradientBackground(timeSeriesId) {
   width: 32px;
   height: 32px;
   display: flex;
+  flex-direction: row-reverse;
   border: 1px solid black;
 }
 
