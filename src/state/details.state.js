@@ -10,7 +10,7 @@ function prepareSelectedValues(values) {
     const timeSeriesStore = useTimeSeriesStore();
     const selectedValues = [];
     for (const [timeSeriesId, value] of Object.entries(values)) {
-        const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(parseInt(timeSeriesId));
+        const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
         selectedValues.push({
             title: timeSeriesInfo.valueLabel,
             from: timeSeriesInfo.name,

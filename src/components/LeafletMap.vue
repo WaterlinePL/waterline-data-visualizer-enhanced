@@ -96,7 +96,7 @@ function addTileLayer() {
 function addMarkers() {
   const coordinates = [];
   for (const [stationId, value] of Object.entries(props.points)) {
-    let station = stationsStore.stationsMap.get(parseInt(stationId));
+    let station = stationsStore.stationsMap.get(stationId);
     addMarker(station, value);
     coordinates.push(station.coordinates);
   }
@@ -129,8 +129,8 @@ function addMarker(station, values) {
 function addPointMarker(station, values) {
   const options = [];
   for (const [timeSeriesId, val] of Object.entries(values)) {
-    const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(parseInt(timeSeriesId));
-    const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(parseInt(timeSeriesId));
+    const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
+    const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(timeSeriesId);
     options.push({
       color: mapValueToThreeColorGradient(val, jsonObject.minValue, jsonObject.maxValue, timeSeriesInfo.minColor, timeSeriesInfo.midColor, timeSeriesInfo.maxColor),
       timeSeriesId: timeSeriesId
@@ -150,8 +150,8 @@ function addPointMarker(station, values) {
 function addLineMarker(station, values) {
   let options = {};
   for (const [timeSeriesId, val] of Object.entries(values)) {
-    const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(parseInt(timeSeriesId));
-    const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(parseInt(timeSeriesId));
+    const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
+    const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(timeSeriesId);
     options = {
       color: mapValueToThreeColorGradient(val, jsonObject.minValue, jsonObject.maxValue, timeSeriesInfo.minColor, timeSeriesInfo.midColor, timeSeriesInfo.maxColor),
       weight: 10,
@@ -171,8 +171,8 @@ function addLineMarker(station, values) {
 function addPolygonMarker(station, values) {
   let options = {};
   for (const [timeSeriesId, val] of Object.entries(values)) {
-    const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(parseInt(timeSeriesId));
-    const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(parseInt(timeSeriesId));
+    const timeSeriesInfo = timeSeriesStore.timeSeriesInfoMap.get(timeSeriesId);
+    const jsonObject = timeSeriesStore.minAndMaxValuesMap.get(timeSeriesId);
     options = {
       color: mapValueToThreeColorGradient(val, jsonObject.minValue, jsonObject.maxValue, timeSeriesInfo.minColor, timeSeriesInfo.midColor, timeSeriesInfo.maxColor),
       className: `marker__content-part-${timeSeriesId}`,

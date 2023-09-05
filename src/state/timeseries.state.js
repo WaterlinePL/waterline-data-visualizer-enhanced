@@ -130,7 +130,7 @@ export const useTimeSeriesStore = defineStore('timeseries', {
                 const valuesHeader = "values";
                 const colorHeader = "color";
                 for (const [timeSeriesId, value] of Object.entries(stationDataInSelectedDay)) {
-                    let timeSeries = this.timeSeriesInfoMap.get(parseInt(timeSeriesId));
+                    let timeSeries = this.timeSeriesInfoMap.get(timeSeriesId);
 
                     if (!results[timeSeries.name]) results[timeSeries.name] = {};
                     if (!results[timeSeries.name][valuesHeader]) results[timeSeries.name][valuesHeader] = new Array(selectedDates.length).fill(0);
