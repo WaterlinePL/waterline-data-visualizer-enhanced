@@ -1,8 +1,8 @@
 <template>
   <TabView class="panel" v-model:activeIndex="detailsStore.activePanelIndex">
     <div class="panel__tab">
-      <TabPanel header="Animation">
-        <Panel class="panel__item panel-item" header="Animation">
+      <TabPanel header="Time Ranges">
+        <Panel class="panel__item panel-item" header="Time Ranges">
             <span class="panel__calendar p-float-label">
                 <Calendar v-model="timeSeriesStore.selectedMinTimeSeriesDataDate" inputId="start_date" showTime hourFormat="24" dateFormat="dd/mm/yy"
                           show-icon :minDate="timeSeriesStore.minTimeSeriesDataDate" :maxDate="timeSeriesStore.maxTimeSeriesDataDate" />
