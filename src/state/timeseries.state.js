@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import pointTimeSeriesData1 from '../data/point/timeseries_precipitation.json'
-import pointTimeSeriesData2 from '../data/point/timeseries_temperature.json'
-import lineTimeSeriesData from '../data/line/timeseries.json'
-import polygonTimeSeriesData1 from '../data/polygon/timeseries_random_value_1.json'
-import polygonTimeSeriesData2 from '../data/polygon/timeseries_random_value_2.json'
-import polygonTimeSeriesData3 from '../data/polygon/timeseries_random_value_3.json'
-import polygonTimeSeriesData4 from '../data/polygon/timeseries_random_value_4.json'
+import pointTimeSeriesData1 from '../data/timeseries/timeseries_point_1.json'
+import pointTimeSeriesData2 from '../data/timeseries/timeseries_point_2.json'
+import lineTimeSeriesData from '../data/timeseries/timeseries_line.json'
+import polygonTimeSeriesData1 from '../data/timeseries/timeseries_polygon_1.json'
+import polygonTimeSeriesData2 from '../data/timeseries/timeseries_polygon_2.json'
+import polygonTimeSeriesData3 from '../data/timeseries/timeseries_polygon_3.json'
+import polygonTimeSeriesData4 from '../data/timeseries/timeseries_polygon_4.json'
 
 function prepareData(data) {
     return data
