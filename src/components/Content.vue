@@ -21,11 +21,15 @@
       <ProgressBar :value="progressValue"></ProgressBar>
     </div>
     <div class="controllers__controls">
-      <Button @click="startAnimation" class="controls__button controls__button--play" icon="pi pi-play" rounded aria-label="Play"
-              v-if="!isAnimating" :disabled="!timeSeriesStore.minTimeSeriesDataDate || !timeSeriesStore.maxTimeSeriesDataDate" />
-      <Button @click="pauseAnimation" class="controls__button controls__button--pause" icon="pi pi-pause" rounded aria-label="Pause" v-else />
-      <Button @click="stopAnimation" class="controls__button  controls__button--stop" icon="pi pi-stop" severity="danger"
-              rounded aria-label="Stop" :disabled="!progressValue" />
+      <div class="controls__buttons">
+        <Button @click="decrementAnimationIndex" :disabled="currentAnimationIndex === startAnimationIndex" icon="pi pi-arrow-left" text rounded />
+        <Button @click="startAnimation" class="controls__button controls__button--play" icon="pi pi-play" rounded aria-label="Play"
+                v-if="!isAnimating" :disabled="!timeSeriesStore.minTimeSeriesDataDate || !timeSeriesStore.maxTimeSeriesDataDate" />
+        <Button @click="pauseAnimation" class="controls__button controls__button--pause" icon="pi pi-pause" rounded aria-label="Pause" v-else />
+        <Button @click="stopAnimation" class="controls__button  controls__button--stop" icon="pi pi-stop" severity="danger"
+                rounded aria-label="Stop" :disabled="!progressValue" />
+        <Button @click="incrementAnimationIndex" :disabled="currentAnimationIndex === endAnimationIndex" icon="pi pi-arrow-right" text rounded />
+      </div>
     </div>
   </div>
 </template>
@@ -74,6 +78,27 @@ function findAnimationIndex(date) {
       ([key, value]) => new Date(key).getTime() === date.getTime()
   );
 }
+
+const decrementAnimationIndex = () => {
+  if (currentAnimationIndex > startAnimationIndex) {
+    currentAnimationIndex--;
+    animate();
+
+  }
+}
+
+const incrementAnimationIndex = () => {
+  if (currentAnimationIndex < endAnimationIndex) {
+    currentAnimationIndex++;
+    animate();
+  }
+}
+
+const autoAnimate = () => {
+  animate();
+  currentAnimationIndex++;
+};
+
 const animate = () => {
   const timeSeriesData = ref(timeSeriesStore.selectedTimeSeriesDataMergedAndGrouped);
   if (currentAnimationIndex > endAnimationIndex) {
@@ -85,15 +110,14 @@ const animate = () => {
   points.value = data;
   timeSeriesStore.animationNow = new Date(key).toLocaleString();
   progressValue.value = ((currentAnimationIndex - startAnimationIndex) / (endAnimationIndex - startAnimationIndex)) * 100;
-  currentAnimationIndex++;
 };
 
 const startAnimation = () => {
   if (isAnimating.value) return;
 
   isAnimating.value = true;
-  animate();
-  animationIntervalId = setInterval(animate, timeSeriesStore.animationInterval);
+  autoAnimate();
+  animationIntervalId = setInterval(autoAnimate, timeSeriesStore.animationInterval);
 };
 
 const pauseAnimation = () => {
@@ -147,6 +171,11 @@ const stopAnimation = () => {
 
 .controls__button {
   margin: 1rem 0.25rem !important;
+}
+
+.controls__buttons {
+  display: inline-flex;
+  align-items: center;
 }
 
 .date__label {
