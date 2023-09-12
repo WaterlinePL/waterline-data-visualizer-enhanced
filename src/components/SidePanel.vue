@@ -66,7 +66,7 @@
                 <Button icon="pi pi-window-maximize" @click="maximizeChart = true" size="small" text />
                 <Dialog v-model:visible="maximizeChart" :header="'Station Data - ' + detailsStore.selectedStationName" :style="{ width: '60vw' }">
                   <div class="dialog__chart">
-                    <Chart type="line" :data="chartData" :options="chartOptionsMaximized" />
+                    <Chart type="line" :data="chartData" :options="chartOptionsMaximized" :plugins="[zoomPlugin]" />
                   </div>
                 </Dialog>
               </div>
@@ -83,6 +83,7 @@ import {ref, watch} from 'vue';
 import { useTimeSeriesStore } from '@/state/timeseries.state';
 import { useDetailsStore } from '@/state/details.state';
 import {useCustomizeStore} from "@/state/customize.state";
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 const timeSeriesStore = useTimeSeriesStore();
 const detailsStore = useDetailsStore();
@@ -171,6 +172,21 @@ const setChartOptions = () => {
         labels: {
           color: textColor
         }
+      },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'xy'
+        },
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: 'xy'
+        }
       }
     },
     scales: {
@@ -201,6 +217,21 @@ const setChartOptionsMaximized = () => {
       legend: {
         labels: {
           color: textColor
+        }
+      },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'xy'
+        },
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: 'xy'
         }
       }
     },
