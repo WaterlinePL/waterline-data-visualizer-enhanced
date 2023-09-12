@@ -5,8 +5,8 @@
         <div class="header__logo">
           <canvas id="logoCanvas" ref="logoCanvas" class="logo__content" />
           <div class="header__text">
-            <p class="header__title">{{ customizeStore.headerTitle }}</p>
-            <p class="header__description">{{ customizeStore.headerDescription }}</p>
+            <div class="header__title" v-html="customizeStore.headerTitle"></div>
+            <div class="header__description" v-html="customizeStore.headerDescription"></div>
           </div>
         </div>
         <MultiSelect class="header__multiselect" v-model="timeSeriesStore.selectedTimeSeriesData" :options="timeSeriesStore.timeSeries" filter :maxSelectedLabels="1"

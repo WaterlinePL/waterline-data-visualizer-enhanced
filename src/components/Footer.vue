@@ -1,8 +1,6 @@
 <template>
   <footer class="footer">
-    <p class="footer-text">
-      {{ customizeStore.footerDescription }}
-    </p>
+    <div class="footer-text" v-html="customizeStore.footerDescription"></div>
   </footer>
 </template>
 
