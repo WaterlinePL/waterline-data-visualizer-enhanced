@@ -93,6 +93,11 @@ function addTileLayer() {
   L.tileLayer(url).addTo(map.value);
 }
 
+const boundsSet = ref(false);
+watch(() => timeSeriesStore.selectedTimeSeriesData, () => {
+  boundsSet.value = false;
+});
+
 function addMarkers() {
   const coordinates = [];
   for (const [stationId, value] of Object.entries(props.points)) {
@@ -100,8 +105,12 @@ function addMarkers() {
     addMarker(station, value);
     coordinates.push(station.coordinates);
   }
-  const bounds = L.latLngBounds(coordinates);
-  map.value.fitBounds(bounds);
+
+  if (!boundsSet.value) {
+    const bounds = L.latLngBounds(coordinates);
+    map.value.fitBounds(bounds);
+    boundsSet.value = true;
+  }
 }
 
 function clearMarkers() {
