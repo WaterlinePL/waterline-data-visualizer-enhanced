@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
 
-function importStations() {
+async function importStations() {
     const data = [];
-    const dataContext = require.context('../data/stations', true, /\.json$/);
-    dataContext.keys().forEach((key) => {
-        const formattedKey = key.replace('./', '');
-        const module = import((`../data/stations/${formattedKey}`));
-        data.push(module);
+    const urlBase = location;
+    const stationsEntries = await fetch(`${urlBase}stations`).then(res => res.json());
+
+    stationsEntries.datasets.forEach(async entry => {
+        const entryId = entry.id;
+        const stationsData = fetch(`${urlBase}stations/${entryId}`).then(res => res.json());
+        data.push(stationsData);
     });
     return Promise.all(data);
 }
@@ -21,8 +23,7 @@ export const useStationsStore = defineStore('stations', {
             if (this.stationsMap.size === 0) {
                 try {
                     const stationDataModules = await importStations();
-                    stationDataModules.forEach((module) => {
-                        const stationData = module.default;
+                    stationDataModules.forEach((stationData) => {
                         this.stations.push(stationData);
                         stationData.forEach((station) => {
                             this.stationsMap.set(station.id, station);

@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
 
-function importTimeSeries() {
+async function importTimeSeries() {
     const data = [];
-    const dataContext = require.context('../data/timeseries', true, /\.json$/);
-    dataContext.keys().forEach((key) => {
-        const formattedKey = key.replace('./', '');
-        const module = import((`../data/timeseries/${formattedKey}`));
-        data.push(module);
+    const urlBase = location;
+    const timeSeriesEntries = await fetch(`${urlBase}timeseries`).then(res => res.json());
+
+    timeSeriesEntries.datasets.forEach(async entry => {
+        const entryId = entry.id;
+        const timeSeriesData = fetch(`${urlBase}timeseries/${entryId}`).then(res => res.json());
+        data.push(timeSeriesData);
     });
     return Promise.all(data);
 }
@@ -102,9 +104,8 @@ export const useTimeSeriesStore = defineStore('timeseries', {
         async initialize() {
             if (this.timeSeriesInfoMap.size === 0) {
                 try {
-                    const timeSeriesModules = await importTimeSeries();
-                    timeSeriesModules.forEach((module) => {
-                        const timeSeriesData = module.default;
+                    const timeSeriesEntries = await importTimeSeries();
+                    timeSeriesEntries.forEach((timeSeriesData) => {
                         this.timeSeries.push(timeSeriesData);
                         let timeSeriesInfo = prepareTimeSeriesInfo(timeSeriesData);
                         this.timeSeriesInfoMap.set(timeSeriesInfo.id, timeSeriesInfo);
