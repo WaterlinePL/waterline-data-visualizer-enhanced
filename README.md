@@ -16,13 +16,37 @@ Waterline Data Visualizer is a web application for visualizing and analyzing hyd
 ### Prerequisites
 - Node.js (version: 20.5.0)
 - npm (version: 9.8.0)
-- vue (version: 3.3.4)
+- pnpm
 
-### Installation
+### Deployment
+0. Install prerequisites:
+  * node and npm can be installed using this link: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+  * pnpm can be installed using command: `npm install -g pnpm`
+1. Install git CLI: [https://git-scm.com/downloads](https://git-scm.com/downloads)
+2. Clone this repository:
+    ```bash
+    git clone https://github.com/WaterlinePL/waterline-data-visualizer-enhanced.git
+    ```
+3. Project setup (install packages)
+    ```
+    pnpm install
+    ```
+4. Build production version (builds frontend, copies server JS file and copies default data directory)
+    ```
+    pnpm build
+    ```
+5. Run webserver (runs server.js script to serve webserver) with data from `dist/data` directory:
+    ```
+    pnpm serve [port_number]
+    ```
+
+By default the application can be accessed in web browser on `localhost:[port]`. Default port is `8080`, can be changed when starting the server.
+
+### Development setup
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/wojdzie/waterline-data-visualizer.git
+    git clone https://github.com/WaterlinePL/waterline-data-visualizer-enhanced.git
     ```
 
 2. Project setup
